@@ -57,10 +57,11 @@ export default function Onboarding() {
     }
   };
 
-  const dialogMessages = {
-    name: `Opa! Como posso te chamar? 🙂`,
-    persona: `Legal, ${name}! Agora escolhe como você quer que eu seja:`,
-    tutorial: tutorialSteps[tutorialStep],
+  const getDialogMessage = () => {
+    if (step === 'name') return 'Opa! Como posso te chamar? 🙂';
+    if (step === 'persona') return `Legal, ${name}! Agora escolhe como você quer que eu seja:`;
+    if (step === 'tutorial') return tutorialSteps[tutorialStep];
+    return '';
   };
 
   return (
@@ -100,11 +101,12 @@ export default function Onboarding() {
           />
         </div>
 
-        {/* Dialog */}
+        {/* Dialog - bubble comes from Batatu */}
         <div className="mb-8">
           <DialogBubble 
-            message={dialogMessages[step]}
+            message={getDialogMessage()}
             key={`${step}-${tutorialStep}`}
+            tailPosition="top"
           />
         </div>
 
