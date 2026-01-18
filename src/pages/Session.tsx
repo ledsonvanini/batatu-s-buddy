@@ -4,12 +4,25 @@ import { Button } from '@/components/ui/button';
 import { BatatuMascot } from '@/components/BatatuMascot';
 import { DialogBubble } from '@/components/DialogBubble';
 import { BreathingCircle } from '@/components/BreathingCircle';
+import { BalloonExercise } from '@/components/exercises/BalloonExercise';
+import { BubblesExercise } from '@/components/exercises/BubblesExercise';
+import { WaveExercise } from '@/components/exercises/WaveExercise';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
-import { X, ThumbsUp, Meh, ThumbsDown } from 'lucide-react';
+import { X, ThumbsUp, Meh, ThumbsDown, Shuffle } from 'lucide-react';
 import type { Contexto, Momento } from '@/data/phrases';
 import { getRandomPhrase, CONTEXTOS_INFO } from '@/data/phrases';
 
 type SessionPhase = 'intro' | 'exercise' | 'feedback' | 'reward';
+type ExerciseType = 'circle' | 'balloon' | 'bubbles' | 'wave';
+
+const exerciseTypes: ExerciseType[] = ['circle', 'balloon', 'bubbles', 'wave'];
+
+const exerciseNames: Record<ExerciseType, string> = {
+  circle: 'Círculo de respiração',
+  balloon: 'Inflar balão 🎈',
+  bubbles: 'Bolhas de sabão 🫧',
+  wave: 'Ondas do mar 🌊',
+};
 
 export default function Session() {
   const navigate = useNavigate();
@@ -18,6 +31,9 @@ export default function Session() {
   const [phase, setPhase] = useState<SessionPhase>('intro');
   const [cycleCount, setCycleCount] = useState(0);
   const [feedback, setFeedback] = useState<'better' | 'same' | 'worse' | null>(null);
+  const [exerciseType, setExerciseType] = useState<ExerciseType>(() => 
+    exerciseTypes[Math.floor(Math.random() * exerciseTypes.length)]
+  );
 
   const currentContexto = (contexto as Contexto) || 'neutro';
   const contextoInfo = CONTEXTOS_INFO[currentContexto];
@@ -57,10 +73,35 @@ export default function Session() {
     navigate('/home');
   };
 
+  const handleChangeExercise = () => {
+    const currentIndex = exerciseTypes.indexOf(exerciseType);
+    const nextIndex = (currentIndex + 1) % exerciseTypes.length;
+    setExerciseType(exerciseTypes[nextIndex]);
+    setCycleCount(0);
+  };
+
   const getMascotMood = () => {
     if (phase === 'reward') return 'excited';
     if (phase === 'exercise') return 'relaxed';
     return 'happy';
+  };
+
+  const renderExercise = () => {
+    const commonProps = {
+      persona: preferences.persona,
+      onCycleComplete: handleCycleComplete,
+    };
+
+    switch (exerciseType) {
+      case 'balloon':
+        return <BalloonExercise {...commonProps} />;
+      case 'bubbles':
+        return <BubblesExercise {...commonProps} />;
+      case 'wave':
+        return <WaveExercise {...commonProps} />;
+      default:
+        return <BreathingCircle {...commonProps} />;
+    }
   };
 
   return (
@@ -92,7 +133,7 @@ export default function Session() {
               mood="happy"
             />
             <div className="mt-6">
-              <DialogBubble message={introMessage} />
+              <DialogBubble message={introMessage} tailPosition="top" />
             </div>
           </div>
         )}
@@ -100,24 +141,39 @@ export default function Session() {
         {/* Exercise Phase */}
         {phase === 'exercise' && (
           <div className="flex flex-col items-center animate-fade-in">
-            <BatatuMascot 
-              size="md" 
-              persona={preferences.persona}
-              mood="relaxed"
-              className="mb-4"
-            />
+            {/* Batatu em posição lateral */}
+            <div className="relative w-full flex justify-center mb-4">
+              <div className="absolute -left-4 top-0">
+                <BatatuMascot 
+                  size="sm" 
+                  persona={preferences.persona}
+                  mood="relaxed"
+                />
+              </div>
+              
+              <div className="flex flex-col items-center">
+                <span className="text-sm text-muted-foreground mb-2">
+                  {exerciseNames[exerciseType]}
+                </span>
+                <button
+                  onClick={handleChangeExercise}
+                  className="flex items-center gap-1 text-xs text-primary hover:underline mb-4"
+                >
+                  <Shuffle className="w-3 h-3" />
+                  Trocar exercício
+                </button>
+              </div>
+            </div>
             
-            <div className="mb-6">
+            <div className="mb-4">
               <DialogBubble 
                 message={duringMessage} 
                 typing={false}
+                tailPosition="top"
               />
             </div>
 
-            <BreathingCircle
-              persona={preferences.persona}
-              onCycleComplete={handleCycleComplete}
-            />
+            {renderExercise()}
 
             <p className="mt-6 text-muted-foreground text-sm">
               {cycleCount < 4 ? `${4 - cycleCount} respirações restantes` : 'Finalizando...'}
@@ -137,6 +193,7 @@ export default function Session() {
             <div className="mt-6 mb-8">
               <DialogBubble 
                 message="Como você está se sentindo agora?"
+                tailPosition="top"
               />
             </div>
 
@@ -182,7 +239,7 @@ export default function Session() {
             />
             
             <div className="mt-6 mb-8">
-              <DialogBubble message={rewardMessage} />
+              <DialogBubble message={rewardMessage} tailPosition="top" />
             </div>
 
             <div className="space-y-3 w-full max-w-sm">

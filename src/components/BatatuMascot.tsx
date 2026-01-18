@@ -1,5 +1,7 @@
 import { cn } from '@/lib/utils';
-import batatuImage from '@/assets/batatu-mascot.png';
+import batatuNeutral from '@/assets/batatu-mascot.png';
+import batatuHappy from '@/assets/batatu-happy.png';
+import batatuSad from '@/assets/batatu-sad.png';
 import type { Persona } from '@/data/phrases';
 
 export type BatatuMood = 'neutral' | 'happy' | 'relaxed' | 'sleepy' | 'excited' | 'sad';
@@ -10,6 +12,7 @@ interface BatatuMascotProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   breathing?: boolean;
   className?: string;
+  position?: 'center' | 'left' | 'right' | 'bottom-left' | 'bottom-right';
   onClick?: () => void;
 }
 
@@ -20,10 +23,12 @@ const sizeClasses = {
   xl: 'w-64 h-64',
 };
 
-const personaFilters = {
-  empolgado: 'hue-rotate(0deg) saturate(1.2)',
-  ouvinte: 'hue-rotate(180deg) saturate(0.9)',
-  conselheiro: 'hue-rotate(120deg) saturate(1.1)',
+const positionClasses = {
+  center: '',
+  left: '-ml-4',
+  right: '-mr-4',
+  'bottom-left': 'fixed bottom-20 left-4 z-50',
+  'bottom-right': 'fixed bottom-20 right-4 z-50',
 };
 
 const moodAnimations = {
@@ -32,7 +37,21 @@ const moodAnimations = {
   relaxed: 'animate-float',
   sleepy: 'animate-breathe-slow opacity-90',
   excited: 'animate-wiggle',
-  sad: 'opacity-80',
+  sad: 'opacity-90',
+};
+
+// Mapeamento de mood para imagem
+const getMoodImage = (mood: BatatuMood) => {
+  switch (mood) {
+    case 'excited':
+    case 'happy':
+      return batatuHappy;
+    case 'sad':
+    case 'sleepy':
+      return batatuSad;
+    default:
+      return batatuNeutral;
+  }
 };
 
 /**
@@ -48,6 +67,7 @@ export function BatatuMascot({
   mood = 'neutral',
   size = 'lg',
   breathing = true,
+  position = 'center',
   className,
   onClick,
 }: BatatuMascotProps) {
@@ -57,11 +77,14 @@ export function BatatuMascot({
     conselheiro: 'animate-breathe',
   }[persona] : '';
 
+  const currentImage = getMoodImage(mood);
+
   return (
     <div
       className={cn(
         'rive-container relative flex items-center justify-center transition-all duration-300',
         sizeClasses[size],
+        positionClasses[position],
         onClick && 'cursor-pointer hover:scale-105',
         className
       )}
@@ -81,16 +104,13 @@ export function BatatuMascot({
       
       {/* Imagem do Batatu - será substituída por Rive */}
       <img
-        src={batatuImage}
+        src={currentImage}
         alt="Batatu, seu companheirinho de autocuidado"
         className={cn(
-          'relative z-10 w-full h-full object-contain drop-shadow-lg',
+          'relative z-10 w-full h-full object-contain drop-shadow-lg transition-all duration-300',
           breathingClass,
           moodAnimations[mood],
         )}
-        style={{
-          filter: personaFilters[persona],
-        }}
       />
       
       {/* Indicador de mood (opcional - visual feedback) */}
@@ -101,7 +121,7 @@ export function BatatuMascot({
       )}
       {mood === 'happy' && (
         <div className="absolute -top-2 -right-2 z-20">
-          <span className="text-xl animate-pop">😊</span>
+          <span className="text-xl animate-pop">🎉</span>
         </div>
       )}
     </div>

@@ -1,19 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BatatuMascot } from '@/components/BatatuMascot';
 import { DialogBubble } from '@/components/DialogBubble';
 import { MoodCard } from '@/components/MoodCard';
+import { BubbleGame } from '@/components/BubbleGame';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { Settings, Flame } from 'lucide-react';
 import type { Contexto } from '@/data/phrases';
-import { getRandomPhrase } from '@/data/phrases';
 
 const moods: Contexto[] = ['dia_tenso', 'entrevista', 'sem_sono', 'crush', 'familia', 'neutro'];
+
+const IDLE_TIMEOUT = 120000; // 2 minutes
 
 export default function Home() {
   const navigate = useNavigate();
   const { preferences } = useUserPreferences();
   const [selectedMood, setSelectedMood] = useState<Contexto | null>(null);
+  const [showBubbleGame, setShowBubbleGame] = useState(false);
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const greeting = getGreeting();
   const welcomeMessage = `${greeting}, ${preferences.userName || 'você'}! Como você está agora?`;
@@ -25,6 +29,37 @@ export default function Home() {
     return 'Boa noite';
   }
 
+  const resetIdleTimer = () => {
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+    idleTimerRef.current = setTimeout(() => {
+      setShowBubbleGame(true);
+    }, IDLE_TIMEOUT);
+  };
+
+  useEffect(() => {
+    // Set up idle detection
+    resetIdleTimer();
+
+    const handleActivity = () => {
+      resetIdleTimer();
+    };
+
+    window.addEventListener('mousemove', handleActivity);
+    window.addEventListener('touchstart', handleActivity);
+    window.addEventListener('keydown', handleActivity);
+
+    return () => {
+      if (idleTimerRef.current) {
+        clearTimeout(idleTimerRef.current);
+      }
+      window.removeEventListener('mousemove', handleActivity);
+      window.removeEventListener('touchstart', handleActivity);
+      window.removeEventListener('keydown', handleActivity);
+    };
+  }, []);
+
   const handleMoodSelect = (contexto: Contexto) => {
     setSelectedMood(contexto);
     // Navigate to session after a brief delay
@@ -33,11 +68,24 @@ export default function Home() {
     }, 300);
   };
 
+  const handleCloseBubbleGame = () => {
+    setShowBubbleGame(false);
+    resetIdleTimer();
+  };
+
   return (
     <div 
       className="min-h-screen flex flex-col"
       style={{ background: 'var(--gradient-hero)' }}
     >
+      {/* Bubble Game Overlay */}
+      {showBubbleGame && (
+        <BubbleGame 
+          persona={preferences.persona} 
+          onClose={handleCloseBubbleGame}
+        />
+      )}
+
       {/* Header */}
       <header className="flex items-center justify-between px-6 pt-6">
         <div className="flex items-center gap-2">
@@ -58,7 +106,7 @@ export default function Home() {
 
       <main className="flex-1 flex flex-col items-center px-6 py-6 overflow-y-auto">
         {/* Mascot */}
-        <div className="mb-4">
+        <div className="mb-2">
           <BatatuMascot 
             size="md" 
             persona={preferences.persona}
@@ -66,11 +114,12 @@ export default function Home() {
           />
         </div>
 
-        {/* Greeting */}
-        <div className="mb-8">
+        {/* Greeting - bubble comes from Batatu */}
+        <div className="mb-6">
           <DialogBubble 
             message={welcomeMessage}
             typingSpeed={25}
+            tailPosition="top"
           />
         </div>
 
