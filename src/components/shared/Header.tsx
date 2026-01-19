@@ -17,7 +17,7 @@ export function Header({
     showSettings = false,
     showVolume = true,
     showTheme = true,
-    transparent = false,
+    transparent = true,
 }: HeaderProps) {
     const navigate = useNavigate();
 
