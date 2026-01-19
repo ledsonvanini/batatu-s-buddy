@@ -4,7 +4,7 @@ import batatuHappy from '@/assets/batatu-happy.png';
 import batatuSad from '@/assets/batatu-sad.png';
 import type { Persona } from '@/data/phrases';
 
-export type BatatuMood = 'neutral' | 'happy' | 'relaxed' | 'sleepy' | 'excited' | 'sad';
+export type BatatuMood = 'neutral' | 'happy' | 'relaxed' | 'sleepy' | 'excited' | 'sad' | 'thinking';
 
 interface BatatuMascotProps {
   persona?: Persona;
@@ -38,6 +38,7 @@ const moodAnimations = {
   sleepy: 'animate-breathe-slow opacity-90',
   excited: 'animate-wiggle',
   sad: 'opacity-90',
+  thinking: 'animate-breathe',
 };
 
 // Mapeamento de mood para imagem
@@ -49,6 +50,9 @@ const getMoodImage = (mood: BatatuMood) => {
     case 'sad':
     case 'sleepy':
       return batatuSad;
+    case 'thinking':
+    case 'relaxed':
+    case 'neutral':
     default:
       return batatuNeutral;
   }

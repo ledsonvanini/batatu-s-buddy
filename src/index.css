@@ -1,115 +1,153 @@
 @import "tailwindcss";
 
 /* ============================================
-   BATATU'S BUDDY - DESIGN SYSTEM v2.1
-   Refinamento: Contraste, Cursor, Scroll
+   BATATU'S BUDDY - GAMING DESIGN SYSTEM v3.0
+   Visual: Competitivo, Imersivo, Jovem
+   Inspiração: Duolingo + Discord + Fortnite
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
 
 /* ============================================
-   CSS CUSTOM PROPERTIES
+   THEME TOKENS - Gaming Palette
    ============================================ */
 
-:root {
-  /* === LIGHT MODE === */
-
-  /* Backgrounds - Mais suaves */
-  --color-background: #f1f5f9;
-  /* Slate-100 */
-  --color-surface: #ffffff;
-  --color-card: #ffffff;
-
-  /* Primary Brand */
-  --color-primary: #f97316;
-  --color-primary-hover: #ea580c;
-  --color-primary-light: #ffedd5;
-  --color-primary-glow: rgba(249, 115, 22, 0.2);
-
-  /* Secondary - Indigo */
-  --color-secondary: #6366f1;
-  --color-secondary-light: #e0e7ff;
-
-  /* Accent - Emerald */
-  --color-accent: #10b981;
-  --color-accent-light: #d1fae5;
-
-  /* Text - Contraste alto */
-  --color-text: #0f172a;
-  /* Slate-900 */
-  --color-text-secondary: #475569;
-  /* Slate-600 */
-  --color-text-muted: #94a3b8;
-
-  /* UI Elements */
-  --color-border: #cbd5e1;
-  /* Slate-300 - Mais visível */
-  --color-divider: #e2e8f0;
-
-  /* Shadows - Suaves */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  --shadow-glow: 0 0 15px var(--color-primary-glow);
+@theme inline {
+  /* Cores semânticas */
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--text);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--on-primary);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--on-secondary);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--on-accent);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-text);
+  --color-border: var(--border);
+  --color-ring: var(--primary);
 
   /* Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
   --radius-full: 9999px;
-
-  /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* === DARK MODE === */
+:root {
+  /* === LIGHT MODE - Energético e Vivo === */
+  
+  /* Base */
+  --bg: hsl(240 10% 96%);
+  --surface: hsl(0 0% 100%);
+  --surface-elevated: hsl(0 0% 100%);
+  --text: hsl(240 15% 10%);
+  --text-secondary: hsl(240 5% 40%);
+  --muted: hsl(240 5% 90%);
+  --muted-text: hsl(240 5% 50%);
+  --border: hsl(240 5% 85%);
+  
+  /* Primary - Gaming Orange/Coral */
+  --primary: hsl(24 95% 55%);
+  --primary-hover: hsl(24 95% 48%);
+  --primary-glow: hsl(24 95% 55% / 0.4);
+  --on-primary: hsl(0 0% 100%);
+  
+  /* Secondary - Electric Purple */
+  --secondary: hsl(262 83% 58%);
+  --secondary-glow: hsl(262 83% 58% / 0.4);
+  --on-secondary: hsl(0 0% 100%);
+  
+  /* Accent - Neon Cyan */
+  --accent: hsl(174 72% 50%);
+  --accent-glow: hsl(174 72% 50% / 0.4);
+  --on-accent: hsl(0 0% 100%);
+  
+  /* Success - Gaming Green */
+  --success: hsl(142 72% 45%);
+  --success-glow: hsl(142 72% 45% / 0.4);
+  
+  /* XP Gold */
+  --xp: hsl(45 95% 55%);
+  --xp-glow: hsl(45 95% 55% / 0.5);
+  
+  /* Streak Fire */
+  --streak: hsl(15 90% 55%);
+  --streak-glow: hsl(15 90% 55% / 0.5);
+  
+  /* Gradients */
+  --gradient-hero: linear-gradient(165deg, hsl(262 83% 95%) 0%, hsl(24 95% 95%) 50%, hsl(174 72% 95%) 100%);
+  --gradient-card: linear-gradient(145deg, hsl(0 0% 100%) 0%, hsl(240 10% 98%) 100%);
+  --gradient-gaming: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  --gradient-cta: linear-gradient(135deg, hsl(24 95% 55%) 0%, hsl(15 90% 50%) 100%);
+  --gradient-glow: radial-gradient(circle at center, var(--primary-glow) 0%, transparent 70%);
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px hsl(240 10% 20% / 0.06);
+  --shadow-md: 0 4px 16px hsl(240 10% 20% / 0.1);
+  --shadow-lg: 0 8px 32px hsl(240 10% 20% / 0.12);
+  --shadow-glow: 0 0 30px var(--primary-glow);
+  --shadow-glow-secondary: 0 0 30px var(--secondary-glow);
+  --shadow-glow-accent: 0 0 30px var(--accent-glow);
+  --shadow-glow-xp: 0 0 20px var(--xp-glow);
+  --shadow-card: 0 4px 20px hsl(240 10% 20% / 0.08);
+  --shadow-button: 0 4px 12px hsl(24 95% 40% / 0.3);
+}
+
+/* === DARK MODE - Neon Gaming === */
 .dark {
-  /* Backgrounds - Navy suave, não azul saturado */
-  --color-background: #0f172a;
-  /* Slate-950 */
-  --color-surface: #1e293b;
-  /* Slate-800 */
-  --color-card: #1e293b;
-
-  --color-primary: #fb923c;
-  --color-primary-hover: #f97316;
-  --color-primary-light: #431407;
-  --color-primary-glow: rgba(251, 146, 60, 0.2);
-
-  --color-text: #f1f5f9;
-  /* Slate-100 */
-  --color-text-secondary: #94a3b8;
-  /* Slate-400 */
-  --color-text-muted: #64748b;
-
-  --color-border: #334155;
-  /* Slate-700 */
-  --color-divider: #1e293b;
-
-  --shadow-card: 0 4px 20px -4px rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 25px var(--color-primary-glow);
+  /* Base - Deep Space */
+  --bg: hsl(240 15% 8%);
+  --surface: hsl(240 12% 12%);
+  --surface-elevated: hsl(240 10% 15%);
+  --text: hsl(0 0% 98%);
+  --text-secondary: hsl(240 5% 65%);
+  --muted: hsl(240 10% 18%);
+  --muted-text: hsl(240 5% 45%);
+  --border: hsl(240 10% 22%);
+  
+  /* Primary - Brighter in dark */
+  --primary: hsl(24 100% 60%);
+  --primary-hover: hsl(24 100% 55%);
+  --primary-glow: hsl(24 100% 55% / 0.5);
+  
+  /* Secondary */
+  --secondary: hsl(262 90% 65%);
+  --secondary-glow: hsl(262 90% 65% / 0.5);
+  
+  /* Accent */
+  --accent: hsl(174 80% 55%);
+  --accent-glow: hsl(174 80% 55% / 0.5);
+  
+  /* Gradients - More dramatic */
+  --gradient-hero: linear-gradient(165deg, hsl(262 60% 12%) 0%, hsl(240 15% 8%) 50%, hsl(24 40% 10%) 100%);
+  --gradient-card: linear-gradient(145deg, hsl(240 10% 14%) 0%, hsl(240 12% 11%) 100%);
+  --shadow-card: 0 4px 25px hsl(0 0% 0% / 0.4);
 }
 
 /* ============================================
    BASE STYLES
    ============================================ */
 
-html,
-body {
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  /* Prevent global scroll */
-  touch-action: none;
-  /* Prevent bounce on mobile */
+  overflow-x: hidden;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
-  background-color: var(--color-background);
-  color: var(--color-text);
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 #root {
@@ -118,224 +156,466 @@ body {
   flex-direction: column;
 }
 
-/* Force pointer cursor on interactive elements */
-button,
-a,
-input[type="submit"],
-input[type="button"],
-.card-interactive,
-.mood-card {
-  cursor: pointer !important;
+/* Gaming font for titles */
+.font-gaming {
+  font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
 }
 
 /* ============================================
-   TYPOGRAPHY & UTILS
+   GAMING CARDS
    ============================================ */
 
-.text-hero {
-  font-size: 2rem;
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-}
-
-.text-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.3;
-}
-
-.text-subtitle {
-  font-size: 1.125rem;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-.text-body {
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.6;
-}
-
-.text-caption {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--color-text-secondary);
-}
-
-/* ============================================
-   CARDS
-   ============================================ */
-
-.card {
-  background: var(--color-card);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--color-border);
-  /* Borda sutil sempre presente */
+.card-gaming {
+  background: var(--gradient-card);
+  border-radius: 1.25rem;
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-card);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
 }
 
-.card-interactive:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-primary);
+.card-gaming::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, transparent 50%, var(--primary-glow) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-/* ============================================
-   BUTTONS
-   ============================================ */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-weight: 600;
-  border-radius: var(--radius-lg);
-  transition: all var(--transition-fast);
-  border: none;
-  outline: none;
+.card-gaming:hover::before {
+  opacity: 1;
 }
 
-.btn:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+.card-gaming:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 
-/* Primary Button */
-.btn-primary {
-  background: var(--color-primary);
-  color: white;
-  padding: 12px 24px;
-}
-
-.btn-primary:hover {
-  background: var(--color-primary-hover);
-  box-shadow: var(--shadow-glow);
-  transform: translateY(-1px);
-}
-
-/* CTA Button */
-.btn-cta {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
-  color: white;
-  padding: 16px 32px;
-  font-size: 1.125rem;
-  font-weight: 700;
-  border-radius: var(--radius-xl);
-  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
-}
-
-.btn-cta:hover {
-  transform: scale(1.02);
-  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.5);
-}
-
-/* Secondary/Ghost Button */
-.btn-ghost {
-  background: transparent;
-  color: var(--color-text-secondary);
-  padding: 8px 16px;
-}
-
-.btn-ghost:hover {
-  background: var(--color-divider);
-  color: var(--color-text);
-}
-
-/* Icon Button - Alto contraste e hit area maior */
-.btn-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--color-surface);
-  color: var(--color-text-secondary);
-  border: 1px solid var(--color-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all var(--transition-fast);
-}
-
-.btn-icon:hover {
-  background: var(--color-divider);
-  color: var(--color-text);
-  border-color: var(--color-text-secondary);
-}
-
-/* ============================================
-   MOOD CARDS (Refined)
-   ============================================ */
-
+/* Interactive card - mood selection */
 .mood-card {
   display: flex;
   flex-direction: column;
-  items-align: center;
+  align-items: center;
   justify-content: center;
-  padding: 16px;
-  background: var(--color-card);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--color-border);
+  padding: 1.25rem;
+  background: var(--gradient-card);
+  border-radius: 1.25rem;
+  border: 2px solid transparent;
   box-shadow: var(--shadow-sm);
-  transition: all var(--transition-normal);
-  text-align: center;
-  height: 100%;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.mood-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-gaming);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
 }
 
 .mood-card:hover {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  border-color: var(--primary);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: var(--shadow-md), 0 0 25px var(--primary-glow);
+}
+
+.mood-card:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+.mood-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* ============================================
-   PROGRESS INDICATORS
+   GAMING BUTTONS
    ============================================ */
 
-.progress-dots {
-  display: flex;
-  gap: 8px;
+.btn-gaming {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--on-primary);
+  background: var(--gradient-cta);
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-button), inset 0 1px 0 hsl(0 0% 100% / 0.2);
+  overflow: hidden;
 }
 
-.progress-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--color-border);
-  transition: all var(--transition-fast);
-}
-
-.progress-dot.active {
-  background: var(--color-primary);
-  transform: scale(1.2);
-}
-
-/* ============================================
-   UTILITY SCROLLABLE AREA
-   ============================================ */
-
-.scrollable-content {
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  flex: 1;
-}
-
-/* ============================================
-   SCENERY BACKGROUNDS
-   ============================================ */
-
-.scenery-base {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-}
-
-.scenery-layer {
+.btn-gaming::before {
+  content: '';
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: -100%;
   width: 100%;
   height: 100%;
+  background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-gaming:hover::before {
+  left: 100%;
+}
+
+.btn-gaming:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px hsl(24 95% 40% / 0.4), inset 0 1px 0 hsl(0 0% 100% / 0.25);
+}
+
+.btn-gaming:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Secondary gaming button */
+.btn-gaming-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-gaming-secondary:hover {
+  border-color: var(--primary);
+  background: var(--primary-glow);
+  box-shadow: var(--shadow-md), 0 0 20px var(--primary-glow);
+}
+
+/* ============================================
+   XP & STREAK BADGES
+   ============================================ */
+
+.badge-xp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background: linear-gradient(135deg, var(--xp) 0%, hsl(35 90% 50%) 100%);
+  color: hsl(35 80% 15%);
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: 2rem;
+  box-shadow: 0 2px 8px var(--xp-glow), inset 0 1px 0 hsl(0 0% 100% / 0.3);
+}
+
+.badge-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--streak) 0%, hsl(5 85% 50%) 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border-radius: 2rem;
+  box-shadow: 0 2px 10px var(--streak-glow), inset 0 1px 0 hsl(0 0% 100% / 0.2);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 2px 10px var(--streak-glow); }
+  50% { box-shadow: 0 2px 20px var(--streak-glow), 0 0 30px var(--streak-glow); }
+}
+
+/* ============================================
+   DIALOG BUBBLE - Gaming Style
+   ============================================ */
+
+.dialog-bubble {
+  position: relative;
+  background: var(--surface);
+  border-radius: 1.5rem;
+  padding: 1.25rem 1.75rem;
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--border);
+  max-width: 20rem;
+}
+
+.dialog-bubble::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.dialog-bubble.tail-top::after {
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 14px solid var(--surface);
+  filter: drop-shadow(0 -2px 0 var(--border));
+}
+
+.dialog-bubble.tail-bottom::after {
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 14px solid var(--surface);
+  filter: drop-shadow(0 2px 0 var(--border));
+}
+
+/* ============================================
+   BOTTOM NAV - Mobile Gaming
+   ============================================ */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 0.5rem 0;
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  z-index: 50;
+  backdrop-filter: blur(10px);
+}
+
+.dark .bottom-nav {
+  background: hsl(240 12% 10% / 0.95);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  color: var(--muted-text);
+  transition: all 0.2s ease;
+  border-radius: 0.75rem;
+}
+
+.nav-item:hover {
+  color: var(--text-secondary);
+  background: var(--muted);
+}
+
+.nav-item.active {
+  color: var(--primary);
+}
+
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  width: 4px;
+  height: 4px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--primary-glow);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes breathe-slow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes breathe-fast {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.07); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+@keyframes bounce-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop {
+  0% { opacity: 0; transform: scale(0.8); }
+  50% { transform: scale(1.05); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-breathe { animation: breathe 4s ease-in-out infinite; }
+.animate-breathe-slow { animation: breathe-slow 5s ease-in-out infinite; }
+.animate-breathe-fast { animation: breathe-fast 2.5s ease-in-out infinite; }
+.animate-wiggle { animation: wiggle 0.5s ease-in-out; }
+.animate-bounce-soft { animation: bounce-soft 2s ease-in-out infinite; }
+.animate-slide-up { animation: slide-up 0.5s ease-out forwards; }
+.animate-slide-down { animation: slide-down 0.5s ease-out forwards; }
+.animate-pop { animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+.animate-glow-pulse { animation: glow-pulse 2s ease-in-out infinite; }
+
+.animate-slide-up-delay { 
+  opacity: 0;
+  animation: slide-up 0.5s ease-out 0.1s forwards; 
+}
+
+/* Shimmer loading effect */
+.shimmer {
+  background: linear-gradient(90deg, var(--muted) 25%, var(--surface) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ============================================
+   PROGRESS & XP BAR
+   ============================================ */
+
+.progress-bar {
+  height: 0.625rem;
+  background: var(--muted);
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--gradient-gaming);
+  border-radius: 1rem;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom, hsl(0 0% 100% / 0.3), transparent);
+  border-radius: 1rem 1rem 0 0;
+}
+
+/* ============================================
+   SAFE AREAS
+   ============================================ */
+
+.safe-top {
+  padding-top: max(1rem, env(safe-area-inset-top));
+}
+
+.safe-bottom {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.text-gradient {
+  background: var(--gradient-gaming);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-primary {
+  box-shadow: var(--shadow-glow);
+}
+
+.glow-secondary {
+  box-shadow: var(--shadow-glow-secondary);
+}
+
+.glow-accent {
+  box-shadow: var(--shadow-glow-accent);
+}
+
+/* Glassmorphism */
+.glass {
+  background: hsl(0 0% 100% / 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(0 0% 100% / 0.2);
+}
+
+.dark .glass {
+  background: hsl(240 10% 10% / 0.7);
+  border: 1px solid hsl(0 0% 100% / 0.1);
+}
+
+/* Focus states */
+*:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
 }

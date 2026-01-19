@@ -1,5 +1,9 @@
+/**
+ * DialogBubble - Balão de diálogo gaming com typing effect
+ */
 import { cn } from '@/lib/utils';
 import { useEffect, useState, useRef } from 'react';
+import { motion } from 'motion/react';
 
 interface DialogBubbleProps {
   message: string;
@@ -47,30 +51,29 @@ export function DialogBubble({
   }, [message, typing, typingSpeed]);
 
   return (
-    <div
+    <motion.div
+      initial={{ scale: 0.9, opacity: 0, y: 10 }}
+      animate={{ scale: 1, opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
       className={cn(
-        'relative bg-card rounded-3xl px-6 py-4 shadow-soft animate-pop max-w-sm',
+        'dialog-bubble',
+        tailPosition === 'top' && 'tail-top',
+        tailPosition === 'bottom' && 'tail-bottom',
         className
       )}
     >
-      {/* Tail pointing to mascot */}
-      {showTail && (
-        <div 
-          className={cn(
-            "absolute left-1/2 -translate-x-1/2 w-0 h-0",
-            tailPosition === 'top' && "-top-3 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-b-[12px] border-b-card",
-            tailPosition === 'bottom' && "-bottom-3 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[12px] border-t-card"
-          )}
-        />
-      )}
-      
-      <p className="text-lg font-medium text-foreground leading-relaxed text-center">
+      <p className="text-base font-medium leading-relaxed text-center" style={{ color: 'var(--text)' }}>
         {displayedText}
         {isTyping && (
-          <span className="inline-block w-2 h-5 bg-primary/60 ml-1 animate-pulse rounded-sm" />
+          <motion.span 
+            className="inline-block w-[3px] h-5 ml-1 rounded-sm"
+            style={{ background: 'var(--primary)' }}
+            animate={{ opacity: [1, 0, 1] }}
+            transition={{ duration: 0.8, repeat: Infinity }}
+          />
         )}
       </p>
-    </div>
+    </motion.div>
   );
 }
 

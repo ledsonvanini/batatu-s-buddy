@@ -1,9 +1,9 @@
 /**
- * MoodCard - Card compacto sem classes hardcoded de cor
- * Usa variáveis CSS globais para tema
+ * MoodCard - Card gaming para seleção de mood
  */
 import { cn } from '@/lib/utils';
 import { CloudRain, Mic, Moon, Heart, Users, Sparkles, type LucideIcon } from 'lucide-react';
+import { motion } from 'motion/react';
 import type { Contexto } from '@/data/phrases';
 import { CONTEXTOS_INFO } from '@/data/phrases';
 
@@ -14,41 +14,48 @@ interface MoodCardProps {
   className?: string;
 }
 
-// Mapeamento de contexto para visual (apenas cores de ícone/bg do ícone)
+// Mapeamento de contexto para visual gaming
 const contextoTheme: Record<Contexto, {
   Icon: LucideIcon;
-  iconBg: string;
+  gradient: string;
   iconColor: string;
+  glowColor: string;
 }> = {
   dia_tenso: {
     Icon: CloudRain,
-    iconBg: 'bg-indigo-100 dark:bg-indigo-900/30',
-    iconColor: 'text-indigo-600 dark:text-indigo-300',
+    gradient: 'from-indigo-500 to-purple-600',
+    iconColor: 'text-indigo-400',
+    glowColor: 'shadow-indigo-500/30',
   },
   entrevista: {
     Icon: Mic,
-    iconBg: 'bg-purple-100 dark:bg-purple-900/30',
-    iconColor: 'text-purple-600 dark:text-purple-300',
+    gradient: 'from-violet-500 to-fuchsia-600',
+    iconColor: 'text-violet-400',
+    glowColor: 'shadow-violet-500/30',
   },
   sem_sono: {
     Icon: Moon,
-    iconBg: 'bg-slate-100 dark:bg-slate-800/50',
-    iconColor: 'text-slate-600 dark:text-slate-300',
+    gradient: 'from-slate-500 to-slate-700',
+    iconColor: 'text-slate-300',
+    glowColor: 'shadow-slate-500/30',
   },
   crush: {
     Icon: Heart,
-    iconBg: 'bg-rose-100 dark:bg-rose-900/30',
-    iconColor: 'text-rose-600 dark:text-rose-300',
+    gradient: 'from-rose-500 to-pink-600',
+    iconColor: 'text-rose-400',
+    glowColor: 'shadow-rose-500/30',
   },
   familia: {
     Icon: Users,
-    iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
-    iconColor: 'text-emerald-600 dark:text-emerald-300',
+    gradient: 'from-emerald-500 to-teal-600',
+    iconColor: 'text-emerald-400',
+    glowColor: 'shadow-emerald-500/30',
   },
   neutro: {
     Icon: Sparkles,
-    iconBg: 'bg-amber-100 dark:bg-amber-900/30',
-    iconColor: 'text-amber-600 dark:text-amber-300',
+    gradient: 'from-amber-500 to-orange-600',
+    iconColor: 'text-amber-400',
+    glowColor: 'shadow-amber-500/30',
   },
 };
 
@@ -58,30 +65,43 @@ export function MoodCard({ contexto, onClick, selected, className }: MoodCardPro
   const Icon = theme.Icon;
 
   return (
-    <button
+    <motion.button
       onClick={() => onClick(contexto)}
+      whileHover={{ scale: 1.03, y: -4 }}
+      whileTap={{ scale: 0.97 }}
       className={cn(
-        'mood-card group', // CSS class controla layout e cores base
-        selected && 'border-[var(--color-primary)] ring-1 ring-[var(--color-primary)]',
+        'mood-card group relative',
+        selected && 'ring-2 ring-offset-2',
         className
       )}
+      style={{
+        ['--tw-ring-color' as string]: selected ? 'var(--primary)' : 'transparent',
+      }}
     >
-      {/* Icon + Label */}
-      <div className="flex flex-col items-center gap-3 w-full">
-        {/* Icon box */}
-        <div className={cn(
-          'w-14 h-14 rounded-2xl flex items-center justify-center transition-colors',
-          theme.iconBg
-        )}>
-          <Icon className={cn('w-7 h-7', theme.iconColor)} />
-        </div>
+      {/* Glow effect on hover */}
+      <div 
+        className={cn(
+          'absolute inset-0 rounded-[1.25rem] opacity-0 group-hover:opacity-100 transition-opacity blur-xl -z-10',
+          `bg-gradient-to-br ${theme.gradient}`
+        )}
+      />
 
-        {/* Label only, no emoji */}
-        <span className="font-semibold text-sm text-[var(--color-text)] leading-tight">
-          {info.label}
-        </span>
+      {/* Icon container */}
+      <div className={cn(
+        'w-14 h-14 rounded-2xl flex items-center justify-center mb-3',
+        'bg-gradient-to-br transition-transform group-hover:scale-110',
+        theme.gradient,
+        'shadow-lg',
+        theme.glowColor
+      )}>
+        <Icon className="w-7 h-7 text-white drop-shadow-md" />
       </div>
-    </button>
+
+      {/* Label */}
+      <span className="font-bold text-sm leading-tight text-center" style={{ color: 'var(--text)' }}>
+        {info.label}
+      </span>
+    </motion.button>
   );
 }
 
