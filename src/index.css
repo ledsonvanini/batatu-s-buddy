@@ -1,371 +1,341 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Batatu App - Design System
-   Cores vibrantes para adolescentes, animações suaves, 
-   preparado para integração Rive */
+/* ============================================
+   BATATU'S BUDDY - DESIGN SYSTEM v2.1
+   Refinamento: Contraste, Cursor, Scroll
+   ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-@layer base {
-  :root {
-    /* Base - Fundo claro com personalidade */
-    --background: 45 30% 98%;
-    --foreground: 25 30% 15%;
+/* ============================================
+   CSS CUSTOM PROPERTIES
+   ============================================ */
 
-    /* Cards e superfícies */
-    --card: 45 40% 99%;
-    --card-foreground: 25 30% 15%;
+:root {
+  /* === LIGHT MODE === */
 
-    --popover: 45 40% 99%;
-    --popover-foreground: 25 30% 15%;
+  /* Backgrounds - Mais suaves */
+  --color-background: #f1f5f9;
+  /* Slate-100 */
+  --color-surface: #ffffff;
+  --color-card: #ffffff;
 
-    /* Primary - Laranja Batatu (Empolgado) */
-    --primary: 25 95% 53%;
-    --primary-foreground: 0 0% 100%;
+  /* Primary Brand */
+  --color-primary: #f97316;
+  --color-primary-hover: #ea580c;
+  --color-primary-light: #ffedd5;
+  --color-primary-glow: rgba(249, 115, 22, 0.2);
 
-    /* Secondary - Azul Suave (Ouvinte) */
-    --secondary: 217 91% 70%;
-    --secondary-foreground: 0 0% 100%;
+  /* Secondary - Indigo */
+  --color-secondary: #6366f1;
+  --color-secondary-light: #e0e7ff;
 
-    /* Accent - Verde Teal (Conselheiro) */
-    --accent: 160 84% 39%;
-    --accent-foreground: 0 0% 100%;
+  /* Accent - Emerald */
+  --color-accent: #10b981;
+  --color-accent-light: #d1fae5;
 
-    /* Muted para textos secundários */
-    --muted: 35 20% 92%;
-    --muted-foreground: 25 15% 45%;
+  /* Text - Contraste alto */
+  --color-text: #0f172a;
+  /* Slate-900 */
+  --color-text-secondary: #475569;
+  /* Slate-600 */
+  --color-text-muted: #94a3b8;
 
-    /* Estados */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+  /* UI Elements */
+  --color-border: #cbd5e1;
+  /* Slate-300 - Mais visível */
+  --color-divider: #e2e8f0;
 
-    /* UI Elements */
-    --border: 35 25% 88%;
-    --input: 35 25% 88%;
-    --ring: 25 95% 53%;
+  /* Shadows - Suaves */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-glow: 0 0 15px var(--color-primary-glow);
 
-    --radius: 1rem;
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
 
-    /* Cores das Personas */
-    --batatu-empolgado: 25 95% 53%;
-    --batatu-empolgado-light: 30 100% 65%;
-    --batatu-ouvinte: 217 91% 70%;
-    --batatu-ouvinte-light: 250 85% 75%;
-    --batatu-conselheiro: 160 84% 39%;
-    --batatu-conselheiro-light: 168 80% 50%;
-
-    /* Gradientes */
-    --gradient-warm: linear-gradient(135deg, hsl(25 95% 53%) 0%, hsl(40 95% 55%) 100%);
-    --gradient-calm: linear-gradient(135deg, hsl(217 91% 70%) 0%, hsl(250 85% 75%) 100%);
-    --gradient-focus: linear-gradient(135deg, hsl(160 84% 39%) 0%, hsl(168 80% 50%) 100%);
-    --gradient-sunset: linear-gradient(180deg, hsl(35 100% 95%) 0%, hsl(25 90% 90%) 100%);
-    --gradient-hero: linear-gradient(180deg, hsl(35 100% 97%) 0%, hsl(45 50% 95%) 50%, hsl(35 80% 92%) 100%);
-
-    /* Sombras */
-    --shadow-soft: 0 4px 20px -4px hsl(25 50% 50% / 0.15);
-    --shadow-card: 0 8px 30px -8px hsl(25 50% 50% / 0.12);
-    --shadow-glow-orange: 0 0 40px -10px hsl(25 95% 53% / 0.4);
-    --shadow-glow-blue: 0 0 40px -10px hsl(217 91% 70% / 0.4);
-    --shadow-glow-green: 0 0 40px -10px hsl(160 84% 39% / 0.4);
-
-    /* Sidebar defaults */
-    --sidebar-background: 45 30% 98%;
-    --sidebar-foreground: 25 30% 15%;
-    --sidebar-primary: 25 95% 53%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 35 20% 92%;
-    --sidebar-accent-foreground: 25 30% 15%;
-    --sidebar-border: 35 25% 88%;
-    --sidebar-ring: 25 95% 53%;
-  }
-
-  .dark {
-    --background: 25 25% 8%;
-    --foreground: 35 30% 95%;
-
-    --card: 25 20% 12%;
-    --card-foreground: 35 30% 95%;
-
-    --popover: 25 20% 12%;
-    --popover-foreground: 35 30% 95%;
-
-    --primary: 25 95% 55%;
-    --primary-foreground: 25 30% 8%;
-
-    --secondary: 217 80% 60%;
-    --secondary-foreground: 0 0% 100%;
-
-    --accent: 160 70% 45%;
-    --accent-foreground: 0 0% 100%;
-
-    --muted: 25 15% 20%;
-    --muted-foreground: 35 15% 60%;
-
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 25 15% 20%;
-    --input: 25 15% 20%;
-    --ring: 25 95% 55%;
-
-    --gradient-hero: linear-gradient(180deg, hsl(25 20% 10%) 0%, hsl(25 15% 12%) 50%, hsl(25 20% 8%) 100%);
-
-    --sidebar-background: 25 20% 10%;
-    --sidebar-foreground: 35 30% 95%;
-    --sidebar-primary: 25 95% 55%;
-    --sidebar-primary-foreground: 25 30% 8%;
-    --sidebar-accent: 25 15% 20%;
-    --sidebar-accent-foreground: 35 30% 95%;
-    --sidebar-border: 25 15% 20%;
-    --sidebar-ring: 25 95% 55%;
-  }
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+/* === DARK MODE === */
+.dark {
+  /* Backgrounds - Navy suave, não azul saturado */
+  --color-background: #0f172a;
+  /* Slate-950 */
+  --color-surface: #1e293b;
+  /* Slate-800 */
+  --color-card: #1e293b;
 
-  html {
-    font-family: 'Nunito', system-ui, sans-serif;
-  }
+  --color-primary: #fb923c;
+  --color-primary-hover: #f97316;
+  --color-primary-light: #431407;
+  --color-primary-glow: rgba(251, 146, 60, 0.2);
 
-  body {
-    @apply bg-background text-foreground antialiased;
-  }
+  --color-text: #f1f5f9;
+  /* Slate-100 */
+  --color-text-secondary: #94a3b8;
+  /* Slate-400 */
+  --color-text-muted: #64748b;
+
+  --color-border: #334155;
+  /* Slate-700 */
+  --color-divider: #1e293b;
+
+  --shadow-card: 0 4px 20px -4px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 25px var(--color-primary-glow);
 }
 
-@layer components {
-  /* Mood Cards */
-  .mood-card {
-    @apply relative overflow-hidden rounded-2xl p-6 cursor-pointer transition-all duration-300;
-    @apply bg-card border-2 border-transparent;
-    @apply hover:scale-[1.02] hover:shadow-card active:scale-[0.98];
-  }
+/* ============================================
+   BASE STYLES
+   ============================================ */
 
-  .mood-card:hover {
-    border-color: hsl(var(--primary) / 0.3);
-  }
-
-  /* Dialog Bubble */
-  .dialog-bubble {
-    @apply relative bg-card rounded-3xl px-6 py-4 shadow-soft;
-    @apply before:content-[''] before:absolute before:bottom-0 before:left-8 
-           before:w-4 before:h-4 before:bg-card before:rounded-br-xl
-           before:translate-y-3 before:-rotate-45;
-  }
-
-  /* Persona badges */
-  .persona-badge {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold;
-  }
-
-  .persona-empolgado {
-    @apply bg-primary/15 text-primary;
-  }
-
-  .persona-ouvinte {
-    @apply bg-secondary/20 text-secondary;
-  }
-
-  .persona-conselheiro {
-    @apply bg-accent/15 text-accent;
-  }
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  /* Prevent global scroll */
+  touch-action: none;
+  /* Prevent bounce on mobile */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
 
-@layer utilities {
-  /* Breathing animations for Batatu */
-  .animate-breathe {
-    animation: breathe 6s ease-in-out infinite;
-  }
-
-  .animate-breathe-fast {
-    animation: breathe-fast 4s ease-in-out infinite;
-  }
-
-  .animate-breathe-slow {
-    animation: breathe-slow 8s ease-in-out infinite;
-  }
-
-  .animate-float {
-    animation: float 4s ease-in-out infinite;
-  }
-
-  .animate-bounce-soft {
-    animation: bounce-soft 2s ease-in-out infinite;
-  }
-
-  .animate-wiggle {
-    animation: wiggle 0.5s ease-in-out;
-  }
-
-  .animate-pop {
-    animation: pop 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  }
-
-  .animate-fade-in {
-    animation: fade-in 0.5s ease-out forwards;
-  }
-
-  .animate-slide-up {
-    animation: slide-up 0.5s ease-out forwards;
-  }
-
-  .animate-slide-up-delay {
-    animation: slide-up 0.5s ease-out forwards;
-    animation-delay: 0.1s;
-    opacity: 0;
-  }
-
-  /* Gradient text */
-  .text-gradient-warm {
-    @apply bg-clip-text text-transparent;
-    background-image: var(--gradient-warm);
-  }
-
-  .text-gradient-calm {
-    @apply bg-clip-text text-transparent;
-    background-image: var(--gradient-calm);
-  }
-
-  /* Rive container preparation */
-  .rive-container {
-    @apply relative w-full h-full;
-  }
-
-  /* Glass effect for cards */
-  .glass {
-    @apply backdrop-blur-md bg-card/80;
-  }
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Keyframes */
-@keyframes breathe {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
+/* Force pointer cursor on interactive elements */
+button,
+a,
+input[type="submit"],
+input[type="button"],
+.card-interactive,
+.mood-card {
+  cursor: pointer !important;
 }
 
-@keyframes breathe-fast {
-  0%, 100% {
-    transform: scale(1);
-  }
-  40% {
-    transform: scale(1.06);
-  }
-  60% {
-    transform: scale(1.06);
-  }
+/* ============================================
+   TYPOGRAPHY & UTILS
+   ============================================ */
+
+.text-hero {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
-@keyframes breathe-slow {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.04);
-  }
+.text-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
+.text-subtitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
-@keyframes bounce-soft {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
+.text-body {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
 }
 
-@keyframes wiggle {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(-3deg);
-  }
-  75% {
-    transform: rotate(3deg);
-  }
+.text-caption {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
 }
 
-@keyframes pop {
-  0% {
-    transform: scale(0.8);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+/* ============================================
+   CARDS
+   ============================================ */
+
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  /* Borda sutil sempre presente */
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
 }
 
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+  border: none;
+  outline: none;
 }
 
-/* Breathing circle animation for exercises */
-@keyframes breathing-circle {
-  0% {
-    transform: scale(0.6);
-    opacity: 0.8;
-  }
-  50% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(0.6);
-    opacity: 0.8;
-  }
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
 }
 
-.animate-breathing-circle {
-  animation: breathing-circle 6s ease-in-out infinite;
+/* Primary Button */
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+  padding: 12px 24px;
 }
 
-/* Bubble pop animation for screensaver */
-@keyframes bubble-float {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-10px) scale(1.05);
-  }
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
 }
 
-.animate-bubble {
-  animation: bubble-float 3s ease-in-out infinite;
+/* CTA Button */
+.btn-cta {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+  color: white;
+  padding: 16px 32px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+}
+
+.btn-cta:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.5);
+}
+
+/* Secondary/Ghost Button */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  padding: 8px 16px;
+}
+
+.btn-ghost:hover {
+  background: var(--color-divider);
+  color: var(--color-text);
+}
+
+/* Icon Button - Alto contraste e hit area maior */
+.btn-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.btn-icon:hover {
+  background: var(--color-divider);
+  color: var(--color-text);
+  border-color: var(--color-text-secondary);
+}
+
+/* ============================================
+   MOOD CARDS (Refined)
+   ============================================ */
+
+.mood-card {
+  display: flex;
+  flex-direction: column;
+  items-align: center;
+  justify-content: center;
+  padding: 16px;
+  background: var(--color-card);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  text-align: center;
+  height: 100%;
+}
+
+.mood-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   PROGRESS INDICATORS
+   ============================================ */
+
+.progress-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.progress-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-border);
+  transition: all var(--transition-fast);
+}
+
+.progress-dot.active {
+  background: var(--color-primary);
+  transform: scale(1.2);
+}
+
+/* ============================================
+   UTILITY SCROLLABLE AREA
+   ============================================ */
+
+.scrollable-content {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+}
+
+/* ============================================
+   SCENERY BACKGROUNDS
+   ============================================ */
+
+.scenery-base {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.scenery-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }

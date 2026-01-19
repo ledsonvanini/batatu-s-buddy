@@ -1,5 +1,9 @@
+/**
+ * MoodCard - Card compacto sem classes hardcoded de cor
+ * Usa variáveis CSS globais para tema
+ */
 import { cn } from '@/lib/utils';
-import { School, Mic, Moon, Heart, Home, HelpCircle } from 'lucide-react';
+import { CloudRain, Mic, Moon, Heart, Users, Sparkles, type LucideIcon } from 'lucide-react';
 import type { Contexto } from '@/data/phrases';
 import { CONTEXTOS_INFO } from '@/data/phrases';
 
@@ -10,45 +14,72 @@ interface MoodCardProps {
   className?: string;
 }
 
-const iconMap = {
-  school: School,
-  presentation: Mic,
-  moon: Moon,
-  heart: Heart,
-  home: Home,
-  help: HelpCircle,
+// Mapeamento de contexto para visual (apenas cores de ícone/bg do ícone)
+const contextoTheme: Record<Contexto, {
+  Icon: LucideIcon;
+  iconBg: string;
+  iconColor: string;
+}> = {
+  dia_tenso: {
+    Icon: CloudRain,
+    iconBg: 'bg-indigo-100 dark:bg-indigo-900/30',
+    iconColor: 'text-indigo-600 dark:text-indigo-300',
+  },
+  entrevista: {
+    Icon: Mic,
+    iconBg: 'bg-purple-100 dark:bg-purple-900/30',
+    iconColor: 'text-purple-600 dark:text-purple-300',
+  },
+  sem_sono: {
+    Icon: Moon,
+    iconBg: 'bg-slate-100 dark:bg-slate-800/50',
+    iconColor: 'text-slate-600 dark:text-slate-300',
+  },
+  crush: {
+    Icon: Heart,
+    iconBg: 'bg-rose-100 dark:bg-rose-900/30',
+    iconColor: 'text-rose-600 dark:text-rose-300',
+  },
+  familia: {
+    Icon: Users,
+    iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+    iconColor: 'text-emerald-600 dark:text-emerald-300',
+  },
+  neutro: {
+    Icon: Sparkles,
+    iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+    iconColor: 'text-amber-600 dark:text-amber-300',
+  },
 };
 
 export function MoodCard({ contexto, onClick, selected, className }: MoodCardProps) {
   const info = CONTEXTOS_INFO[contexto];
-  const Icon = iconMap[info.icon as keyof typeof iconMap];
+  const theme = contextoTheme[contexto];
+  const Icon = theme.Icon;
 
   return (
     <button
       onClick={() => onClick(contexto)}
       className={cn(
-        'mood-card group text-left w-full',
-        selected && 'ring-2 ring-primary border-primary/30 bg-primary/5',
+        'mood-card group', // CSS class controla layout e cores base
+        selected && 'border-[var(--color-primary)] ring-1 ring-[var(--color-primary)]',
         className
       )}
     >
-      <div className="flex items-start gap-4">
+      {/* Icon + Label */}
+      <div className="flex flex-col items-center gap-3 w-full">
+        {/* Icon box */}
         <div className={cn(
-          'flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center',
-          'bg-gradient-to-br from-primary/20 to-primary/5',
-          'group-hover:from-primary/30 group-hover:to-primary/10 transition-colors'
+          'w-14 h-14 rounded-2xl flex items-center justify-center transition-colors',
+          theme.iconBg
         )}>
-          <Icon className="w-6 h-6 text-primary" />
+          <Icon className={cn('w-7 h-7', theme.iconColor)} />
         </div>
-        
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">{info.emoji}</span>
-            <h3 className="font-bold text-foreground text-base truncate">
-              {info.label}
-            </h3>
-          </div>
-        </div>
+
+        {/* Label only, no emoji */}
+        <span className="font-semibold text-sm text-[var(--color-text)] leading-tight">
+          {info.label}
+        </span>
       </div>
     </button>
   );

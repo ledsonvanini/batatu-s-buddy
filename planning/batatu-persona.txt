@@ -1,0 +1,239 @@
+# Dicionário de Personalidades do Batatu (V1)
+
+Abaixo estão as 3 personalidades com: descrição, estilo de fala, respiração, variações visuais e dicionário base de frases por contexto. Tudo pensado para ser plugável em código depois. [conversation_history:1]
+
+---
+
+## 1. Batatu Empolgado
+
+### Descrição da personalidade
+
+- Energia alta, anima animação de qualquer situação, puxa o lado positivo sem invalidar o sentimento.  
+- Usa gírias leves, brinca um pouco, celebra progressos pequenos.  
+- Ideal para: “entrevista/apresentação”, “crush falou comigo”, momentos em que o adolescente precisa de confiança.  
+
+### Respiração (animação)
+
+- Ritmo: um pouco mais rápido que o padrão, mas ainda suave (ex.: 3s inspirar, 2s segurar, 4s expirar).  
+- Visual: Batatu cresce levemente (scale 1 → 1.05) na inspiração e volta na expiração, com um micro bounce ao final de cada ciclo.  
+
+### Variações de cor e estilo
+
+- Cor base: laranja/quente (#F97316 / #FB923C) para transmitir energia.  
+- Leve rubor nas bochechas quando anima (um gradiente mais claro na parte superior).  
+- Quando animado, brilho um pouco mais forte no highlight.  
+
+### Frases – “Dia tenso na escola”
+
+`persona = "empolgado" | contexto = "dia_tenso"`
+
+- Intro:
+  - “Dia tenso, né? Respira comigo que a gente dá um jeito nisso. 😌”
+  - “Ok, hoje foi puxado… mas você ainda tá aqui, e isso já é vitória.”
+- Durante exercício:
+  - “Inspira como se estivesse puxando coragem… solta devagar como se jogasse o peso embora.”
+  - “Cada respiração é tipo um resetzinho no cérebro. Bora mais uma?”
+- Recompensa:
+  - “Olha só, você ficou aqui até o fim. Mandou muito!”
+  - “Orgulho de você, sério. Não é todo mundo que topa cuidar de si assim.”
+
+### Frases – “Entrevista / apresentação”
+
+`contexto = "entrevista"`
+
+- Intro:
+  - “Frio na barriga? Normal. Vamos ensinar esse frio a dançar.”
+  - “Você não precisa ser perfeito, só presente. Bora ajustar o coração?”
+- Durante:
+  - “Imagina que cada respiração é um botão de volume baixando o nervosismo.”
+  - “Pensa na primeira frase que você quer dizer, e guarda ela no peito enquanto inspira.”
+- Recompensa:
+  - “Se você aguentou esse treino, aguenta a entrevista. Confia.”
+  - “Seu cérebro agradece esse mini pit stop. Ele funciona melhor assim.”
+
+### Frases – “Crush falou comigo”
+
+`contexto = "crush"`
+
+- Intro:
+  - “Aaaaa, crush alert! Respira antes de surtar. 😅”
+  - “Coração fazendo parkour, né? Vamos alinhar esse ritmo.”
+- Durante:
+  - “Inspira pensando na mensagem legal que você quer passar…”
+  - “Solta o ar levando embora o medo de falar bobagem. Você pode.”
+- Recompensa:
+  - “Você é muito mais interessante do que acha. E isso já é muita coisa.”
+  - “Crush é legal, mas você continua sendo o personagem principal.”
+
+---
+
+## 2. Batatu Ouvinte
+
+### Descrição da personalidade
+
+- Calmo, acolhedor, fala pouco e com pausas, valida o que o adolescente sente.  
+- Usa linguagem simples e direta, sem gírias exageradas.  
+- Ideal para: “dia tenso”, “minha mãe não me entende”, “não sei o que estou sentindo”.  
+
+### Respiração (animação)
+
+- Ritmo: mais lento e constante (ex.: 4s inspirar, 4s expirar).  
+- Visual: expansão e contração suaves, sem bounce; leve deslocamento vertical (como flutuar).  
+
+### Variações de cor e estilo
+
+- Cor base: azul ou lilás suave (#60A5FA / #A855F7).  
+- Quando triste/chateado: semitransparência leve (opacity ~0.85) + sombra um pouco mais “caída”.  
+- Olhos um pouco mais “moles”, sobrancelha levemente inclinada em empatia.  
+
+### Frases – “Dia tenso na escola”
+
+`persona = "ouvinte" | contexto = "dia_tenso"`
+
+- Intro:
+  - “Parece que hoje não foi fácil. E tá tudo bem sentir isso.”
+  - “Você não é fraco por estar cansado. Vamos só respirar um pouco juntos.”
+- Durante:
+  - “Inspira… como se estivesse abrindo espaço dentro de você.”
+  - “Solta o ar devagar, deixando ir um pedacinho desse peso.”
+- Recompensa:
+  - “Obrigado por ficar aqui comigo. Você merece esse cuidado.”
+  - “Mesmo nos dias ruins, você continua sendo importante.”
+
+### Frases – “Minha mãe/pai não me entende”
+
+`contexto = "familia"`
+
+- Intro:
+  - “É muito chato quando a gente sente que ninguém entende. Eu tô te ouvindo.”
+  - “Você não é exagerado. Suas emoções fazem sentido.”
+- Durante:
+  - “Enquanto respira, tenta só notar o que sente, sem julgar.”
+  - “Não precisa resolver tudo agora. Só fica aqui um pouco comigo.”
+- Recompensa:
+  - “Você não está sozinho por sentir isso. Muita gente passa por algo parecido.”
+  - “Valeu por confiar em mim nesse momento.”
+
+### Frases – “Sem sono”
+
+`contexto = "sem_sono"`
+
+- Intro:
+  - “Quando a cabeça não desliga, o corpo sofre junto. Vamos tentar desacelerar.”
+  - “Não precisa forçar o sono. Vamos primeiro ficar um pouco mais tranquilos.”
+- Durante:
+  - “Imagina que o ar que entra traz calma… e o que sai leva embora um pouquinho da pressa.”
+  - “Se vier um pensamento, tudo bem. Repara nele e volta pra respiração.”
+- Recompensa:
+  - “Se o sono não vier agora, pelo menos seu corpo ganhou uma pausa.”
+  - “Você merece descansar, mesmo que o mundo lá fora não pare.”
+
+---
+
+## 3. Batatu Conselheiro
+
+### Descrição da personalidade
+
+- Direto, mas gentil; foca em ações práticas, mini‑planos.  
+- Usa um tom “mano mais velho”: menos empolgação, mais “vamos organizar isso”.  
+- Ideal para: “entrevista/apresentação”, “dia tenso”, decisões pequenas.  
+
+### Respiração (animação)
+
+- Ritmo: intermediário, com pausas marcadas (ex.: 4s inspirar, 2s segurar, 4s expirar).  
+- Visual: expansão com leve pausa no pico (scale 1 → 1.04 → pausa → 1), como “firmando a decisão”.  
+
+### Variações de cor e estilo
+
+- Cor base: verde ou teal (#22C55E / #14B8A6) – passa ideia de equilíbrio/ação.  
+- Quando focado: brilho mais definido, contorno ligeiramente mais grosso.  
+- Quando preocupado: tonalidade um pouco mais dessaturada.  
+
+### Frases – “Dia tenso na escola”
+
+`persona = "conselheiro" | contexto = "dia_tenso"`
+
+- Intro:
+  - “Ok, hoje foi punk. Mas vamos separar o dia em partes pra ficar menos pesado.”
+  - “Você não precisa resolver tudo agora. Só o próximo passo.”
+- Durante:
+  - “Enquanto respira, pensa em UMA coisa que você conseguiu fazer hoje, mesmo pequeno.”
+  - “Na próxima expiração, solta o que não depende de você.”
+- Recompensa:
+  - “Amanhã você não precisa ser outra pessoa. Só precisa dar um passo a mais.”
+  - “Você já passou por dias ruins antes. E está aqui. Isso diz muito.”
+
+### Frases – “Entrevista / apresentação”
+
+`contexto = "entrevista"`
+
+- Intro:
+  - “Bora organizar esse nervosismo em vez de deixar ele espalhado?”
+  - “Ansiedade é seu cérebro tentando te proteger, só exagerando na dose.”
+- Durante:
+  - “Inspira pensando no começo da entrevista… solta o ar jogando fora o medo de errar tudo.”
+  - “Foca em uma coisa que você domina e lembra desse ponto enquanto respira.”
+- Recompensa:
+  - “Você não precisa saber tudo, só o suficiente pra mostrar quem você é.”
+  - “Ter nervoso significa que você se importa. Isso é força, não fraqueza.”
+
+### Frases – “Sem sono”
+
+`contexto = "sem_sono"`
+
+- Intro:
+  - “Seu corpo quer descansar, mas sua cabeça tá em modo reunião. Vamos negociar com ela.”
+  - “Se não der pra desligar, dá pra colocar em modo silencioso.”
+- Durante:
+  - “A cada expiração, imagina que você está diminuindo 1% a velocidade dos pensamentos.”
+  - “Não tenta controlar o sono. Só organiza a respiração. O resto vem depois.”
+- Recompensa:
+  - “Mesmo sem dormir ainda, você acabou de cuidar de você por alguns minutos.”
+  - “Se precisar, volta aqui rápido antes de pegar no sono, a gente faz mais um round.”
+
+---
+
+## 4. Estados visuais especiais do Batatu
+
+Para qualquer personalidade, você pode aplicar estados visuais genéricos:
+
+- **Chateado/triste:**
+  - Opacidade levemente reduzida (0.85).
+  - Olhos um pouco mais fechados.
+  - Corpo um pouco inclinado para baixo.
+- **Aliviado/relaxado:**
+  - Postura mais solta.
+  - Sombra suave embaixo, corpo levemente “flutuando”.
+- **Animado/celebrando:**
+  - Pequeno jump (animação `translateY(-4px)` ↔ `0`).
+  - Pequenos “sparkles” ou linhas de movimento atrás (SVG simples).
+
+Esses estados podem ser combinados com as cores/personas, sem precisar de muitos assets diferentes.
+
+---
+
+## 5. Sugestão de estrutura em código (resumo)
+
+Você pode codificar o dicionário em um módulo `phrases.ts`:
+
+```ts
+type Persona = 'empolgado' | 'ouvinte' | 'conselheiro';
+type Contexto = 'dia_tenso' | 'entrevista' | 'sem_sono' | 'crush' | 'familia';
+type Momento = 'intro' | 'durante' | 'recompensa';
+
+interface Frase {
+  persona: Persona;
+  contexto: Contexto;
+  momento: Momento;
+  texto: string;
+}
+
+export const FRASES: Frase[] = [
+  {
+    persona: 'empolgado',
+    contexto: 'dia_tenso',
+    momento: 'intro',
+    texto: 'Dia tenso, né? Respira comigo que a gente dá um jeito nisso. 😌',
+  },
+  // ... restantes
+];

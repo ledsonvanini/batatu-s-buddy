@@ -1,0 +1,172 @@
+# Planejamento detalhado – Web App de Autocuidado Gamificado para Adolescentes
+
+Stack: **React + Vite + Tailwind 4.1**, SVGs, animações com CSS/`requestAnimationFrame`/Motion (leve), PWA‑like. [web:71][web:75][web:85]  
+
+---
+
+## 1. Conceito central do produto
+
+**Ideia:** um web app de autocuidado leve para adolescentes, guiado por um “parceirinho” (bolinha estilizada) com personalidades diferentes, que oferece micro‑sessões de 2–5 minutos adaptadas ao contexto emocional do momento.
+
+- Posicionamento: autocuidado, bem‑estar e regulação emocional leve (não terapia, não diagnóstico). [web:61][web:69]  
+- Plataforma: web responsivo + PWA (instalável em mobile/desktop). [web:55][web:83]  
+- Loop principal:
+  1. Login rápido (Google) → pega `displayName` como `userName`.
+  2. Escolha/edição do **parceirinho** (visual + personalidade).
+  3. Tela “Como você está?” → seleção de situação.
+  4. Micro‑exercício guiado (respiração, foco, grounding etc.) com animação.
+  5. Recompensa imediata (frase + som + pose do parceirinho).
+  6. Pergunta de follow‑up (“Quer tentar outro?” / “Foi útil?”).
+
+---
+
+## 2. Público, tom e limites
+
+### Público
+
+- Adolescentes (~13–19 anos), familiarizados com apps, games casuais e memes, mas também sobrecarregados por escola, redes sociais, família. [web:33][web:38]  
+
+### Tom de voz
+
+- Três personalidades do parceirinho:
+  - **Empolgado**: linguagem animada, gírias leves, emojis de texto tipo `:D`, vibra por conquistas.
+  - **Ouvinte**: calmo, acolhedor, mais frases de validação, ritmo mais lento.
+  - **Conselheiro**: direto, ainda gentil, sugere ações práticas.
+
+> Implementar via dicionário de frases por `persona + contexto + horaDoDia` (sem IA no V1).
+
+### Limites (importante)
+
+- Sempre deixar claro: “Este app é para autocuidado leve. Se você estiver se sentindo muito mal, procure um adulto de confiança ou ajuda profissional.” [web:61][web:69]  
+- Evitar temas clínicos pesados ou promessas de cura.
+
+---
+
+## 3. Fluxos principais
+
+### 3.1. Onboarding
+
+1. **Welcome screen**
+   - Mensagem curta: “Oi, bora cuidar de você um pouquinho?”  
+   - CTA: “Entrar com Google”.
+
+2. **Login Google**
+   - Usar OAuth (Firebase Auth ou outro provedor); salvar:
+     - `userId`, `displayName`, `avatarUrl` (se existir).
+   - Após login, redirecionar para “Escolher Parceirinho”.
+
+3. **Escolher Parceirinho**
+   - Passo 1: escolha do visual (3 variações da bolinha: cores/olhos/expressões).
+   - Passo 2: escolha da personalidade (Empolgado, Ouvinte, Conselheiro) com descrições curtinhas.
+   - Salvar preferências no backend simples (ex.: Firestore/Supabase) ou localStorage no V1.
+
+4. **Tutorial rápido**
+   - 2–3 telas explicando:
+     - “Você escolhe como está.”
+     - “A gente faz um exercício curtinho.”
+     - “Seu parceirinho te responde e guarda seu progresso.”
+
+---
+
+### 3.2. Tela “Como você está?”
+
+**Objetivo:** escolher contexto emocional em 1 clique.
+
+Opções iniciais sugeridas (V1):
+
+- “Dia tenso na escola”
+- “Entrevista / apresentação chegando”
+- “Sem sono”
+- “Meu crush falou comigo”
+- “Minha mãe/pai não me entende”
+
+Cada opção mapeia para um **roteiro de sessão** com 1–2 exercícios possíveis.
+
+Layout:
+
+- Cabeçalho com o parceirinho reagindo (animação leve).
+- Cards grandes clicáveis com ícone + rótulo.
+- Botão “Não sei, só tô estranho” → leva para exercício neutro (respiração base).
+
+---
+
+### 3.3. Sessão de 3–5 minutos (exemplo)
+
+Estrutura comum:
+
+1. **Introdução** (15–20 s)
+   - Parceirinho aparece com fala adaptada à personalidade + contexto.
+   - Texto curto tipo chat, com 1–2 mensagens.
+
+2. **Exercício guiado** (2–3 min)
+   - Tipos possíveis:
+     - Respiração (esfera que expande/contrai, trilha sonora leve).
+     - Grounding 5‑4‑3‑2‑1 (listar coisas que vê/ouve/sente etc.).
+     - “Descarrego rápido” (escrever e “explodir” mentalmente um pensamento).
+
+3. **Recompensa & reflexão rápida** (30–40 s)
+   - Frase de reforço do parceirinho.
+   - Pose visual (joinha, abraço, cochilo).
+   - Pergunta “Como você se sente agora?” com 3 carinhas (pior / igual / melhor).
+
+4. **Follow‑up**
+   - Se “pior/igual”: sugerir outro exercício curto ou encerrar com frase acolhedora.
+   - Se “melhor”: pequena comemoração e convite a voltar depois.
+
+---
+
+## 4. Modo descanso de tela (“Liberta o Parceirinho!”)
+
+### Comportamento
+
+- Após X minutos sem interação (ex.: 45–60 s em sessão parada; 3–5 min no menu), app entra em “modo descanso”:
+  - Tela escurece levemente.
+  - Aparecem bolhas translúcidas + parceirinho preso/encoberto em parte.
+
+### Mecânica
+
+- Usuário toca/clica para estourar bolhas:
+  - Transição simples via escala/opacity (`transform + opacity` para performance). [web:79]  
+  - Cada 3–5 bolhas estouradas → mini‑frase do parceirinho (“Respira junto”, “Tamo aqui”, etc.).
+- Ao limpar boa parte das bolhas:
+  - Animação do parceirinho “livre” (pulo, joinha, bocejo).
+  - Uma frase‑recompensa → “Valeu por me libertar. E valeu por tirar uns segundos pra você.”
+
+### Função
+
+- Serve como:
+  - “Mini fidget” para aliviar ansiedade leve.
+  - Ponto de reentrada: após libertar, oferecer voltar ao menu ou fazer um exercício.
+
+---
+
+## 5. Conteúdo e dicionário de frases
+
+### Modelo de dados
+
+- `persona` ∈ {empolgado, ouvinte, conselheiro}
+- `contexto` ∈ {dia_tenso, entrevista, sem_sono, crush, familia, neutro}
+- `momento` ∈ {inicio_sessao, durante_exercicio, recompensa, descanso_tela, followup}
+- `hora_do_dia` (manhã/tarde/noite) opcional.
+
+Estrutura JSON exemplo:
+
+```ts
+type Persona = 'empolgado' | 'ouvinte' | 'conselheiro';
+
+type Momento =
+  | 'intro'
+  | 'pre_exercicio'
+  | 'durante'
+  | 'recompensa'
+  | 'followup'
+  | 'descanso';
+
+interface Frase {
+  id: string;
+  persona: Persona;
+  contexto: string;
+  momento: Momento;
+  hora?: 'manha' | 'tarde' | 'noite';
+  texto: string;
+}
