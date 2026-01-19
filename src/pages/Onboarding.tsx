@@ -1,21 +1,23 @@
+/**
+ * Onboarding - Fluxo de entrada gaming style
+ */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { BatatuMascot } from '@/components/BatatuMascot';
 import { DialogBubble } from '@/components/DialogBubble';
 import { PersonaSelector } from '@/components/PersonaSelector';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Zap, Gamepad2, Trophy } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import type { Persona } from '@/data/phrases';
-import { PERSONAS_INFO } from '@/data/phrases';
 
 type Step = 'name' | 'persona' | 'tutorial';
 
 const tutorialSteps = [
-  "Você escolhe como está se sentindo.",
-  "A gente faz um exercício curtinho juntos.",
-  "Eu te acompanho e guardo seu progresso! 🎮"
+  { text: "Você escolhe como está se sentindo.", icon: Gamepad2 },
+  { text: "A gente faz um exercício curtinho juntos.", icon: Zap },
+  { text: "Eu te acompanho e guardo seu progresso! 🎮", icon: Trophy },
 ];
 
 export default function Onboarding() {
@@ -58,127 +60,192 @@ export default function Onboarding() {
   };
 
   const getDialogMessage = () => {
-    if (step === 'name') return 'Opa! Como posso te chamar? 🙂';
-    if (step === 'persona') return `Legal, ${name}! Agora escolhe como você quer que eu seja:`;
-    if (step === 'tutorial') return tutorialSteps[tutorialStep];
+    if (step === 'name') return 'E aí! Como posso te chamar? 😎';
+    if (step === 'persona') return `Show, ${name}! Agora escolhe meu estilo:`;
+    if (step === 'tutorial') return tutorialSteps[tutorialStep].text;
     return '';
   };
 
   return (
     <div 
-      className="min-h-screen flex flex-col"
+      className="min-h-screen flex flex-col overflow-hidden relative"
       style={{ background: 'var(--gradient-hero)' }}
     >
+      {/* Background effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div 
+          className="absolute w-72 h-72 rounded-full blur-3xl"
+          style={{ background: 'var(--primary-glow)', top: '10%', left: '-10%' }}
+          animate={{ scale: [1, 1.1, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute w-80 h-80 rounded-full blur-3xl"
+          style={{ background: 'var(--secondary-glow)', bottom: '20%', right: '-15%' }}
+          animate={{ scale: [1, 1.15, 1] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        />
+      </div>
+
       <main className="flex-1 flex flex-col items-center px-6 py-8 relative z-10">
         {/* Back button */}
         {step !== 'name' && (
-          <button
+          <motion.button
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
             onClick={handleBack}
-            className="absolute top-6 left-6 p-2 rounded-full hover:bg-muted transition-colors"
+            className="absolute top-6 left-6 p-2 rounded-full glass hover:scale-105 transition-transform"
           >
-            <ArrowLeft className="w-6 h-6 text-muted-foreground" />
-          </button>
+            <ArrowLeft className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} />
+          </motion.button>
         )}
 
         {/* Progress dots */}
-        <div className="flex gap-2 mb-8">
+        <div className="flex gap-3 mb-8 mt-4">
           {['name', 'persona', 'tutorial'].map((s, i) => (
-            <div
+            <motion.div
               key={s}
-              className={`w-2 h-2 rounded-full transition-colors ${
-                step === s ? 'bg-primary' : 'bg-muted-foreground/30'
-              }`}
+              className="h-1.5 rounded-full transition-all duration-300"
+              style={{
+                width: step === s ? '2rem' : '0.5rem',
+                background: step === s ? 'var(--primary)' : 'var(--border)',
+              }}
+              layoutId={`progress-${i}`}
             />
           ))}
         </div>
 
-        {/* Mascot */}
-        <div className="mb-6">
+        {/* Mascot with glow */}
+        <motion.div 
+          className="relative mb-6"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div 
+            className="absolute inset-0 rounded-full blur-2xl animate-glow-pulse"
+            style={{ background: 'var(--primary-glow)', transform: 'scale(1.3)' }}
+          />
           <BatatuMascot 
             size="lg" 
             persona={persona}
-            mood={step === 'tutorial' ? 'happy' : 'neutral'}
+            mood={step === 'tutorial' ? 'excited' : 'happy'}
           />
-        </div>
+        </motion.div>
 
-        {/* Dialog - bubble comes from Batatu */}
-        <div className="mb-8">
+        {/* Dialog */}
+        <motion.div 
+          className="mb-8"
+          key={`${step}-${tutorialStep}`}
+          initial={{ y: 15, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -15, opacity: 0 }}
+        >
           <DialogBubble 
             message={getDialogMessage()}
-            key={`${step}-${tutorialStep}`}
             tailPosition="top"
           />
-        </div>
+        </motion.div>
 
         {/* Content based on step */}
         <div className="w-full max-w-sm">
-          {step === 'name' && (
-            <div className="space-y-4 animate-fade-in">
-              <Input
-                type="text"
-                placeholder="Seu nome ou apelido"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
-                className="h-14 text-lg text-center rounded-2xl border-2 focus:border-primary"
-                maxLength={20}
-              />
-              <Button 
-                variant="hero" 
-                size="lg" 
-                className="w-full"
-                onClick={handleNameSubmit}
-                disabled={!name.trim()}
+          <AnimatePresence mode="wait">
+            {step === 'name' && (
+              <motion.div 
+                key="name"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-4"
               >
-                Continuar
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-            </div>
-          )}
+                <Input
+                  type="text"
+                  placeholder="Seu nome ou apelido"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
+                  className="h-14 text-lg text-center rounded-2xl font-medium"
+                  style={{
+                    background: 'var(--surface)',
+                    border: '2px solid var(--border)',
+                    color: 'var(--text)',
+                  }}
+                  maxLength={20}
+                />
+                <button 
+                  className="btn-gaming w-full"
+                  onClick={handleNameSubmit}
+                  disabled={!name.trim()}
+                >
+                  Continuar
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </motion.div>
+            )}
 
-          {step === 'persona' && (
-            <div className="space-y-6 animate-fade-in">
-              <PersonaSelector
-                selected={persona}
-                onSelect={setPersona}
-              />
-              <Button 
-                variant="hero" 
-                size="lg" 
-                className="w-full"
-                onClick={handlePersonaSubmit}
+            {step === 'persona' && (
+              <motion.div 
+                key="persona"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-6"
               >
-                Esse é o meu estilo!
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-            </div>
-          )}
+                <PersonaSelector
+                  selected={persona}
+                  onSelect={setPersona}
+                />
+                <button 
+                  className="btn-gaming w-full"
+                  onClick={handlePersonaSubmit}
+                >
+                  Esse é o meu estilo!
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </motion.div>
+            )}
 
-          {step === 'tutorial' && (
-            <div className="space-y-6 animate-fade-in">
-              {/* Tutorial step indicator */}
-              <div className="flex justify-center gap-3">
-                {tutorialSteps.map((_, i) => (
-                  <div
-                    key={i}
-                    className={`w-12 h-1 rounded-full transition-colors ${
-                      i <= tutorialStep ? 'bg-primary' : 'bg-muted-foreground/30'
-                    }`}
-                  />
-                ))}
-              </div>
-
-              <Button 
-                variant="hero" 
-                size="lg" 
-                className="w-full"
-                onClick={handleTutorialNext}
+            {step === 'tutorial' && (
+              <motion.div 
+                key="tutorial"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-6"
               >
-                {tutorialStep < tutorialSteps.length - 1 ? 'Próximo' : 'Bora começar!'}
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-            </div>
-          )}
+                {/* Tutorial step icons */}
+                <div className="flex justify-center gap-4">
+                  {tutorialSteps.map((item, i) => {
+                    const StepIcon = item.icon;
+                    const isActive = i <= tutorialStep;
+                    return (
+                      <motion.div
+                        key={i}
+                        className="w-12 h-12 rounded-xl flex items-center justify-center transition-all"
+                        style={{
+                          background: isActive ? 'var(--primary)' : 'var(--muted)',
+                        }}
+                        animate={{ scale: i === tutorialStep ? 1.1 : 1 }}
+                      >
+                        <StepIcon 
+                          className="w-6 h-6" 
+                          style={{ color: isActive ? 'white' : 'var(--muted-text)' }}
+                        />
+                      </motion.div>
+                    );
+                  })}
+                </div>
+
+                <button 
+                  className="btn-gaming w-full"
+                  onClick={handleTutorialNext}
+                >
+                  {tutorialStep < tutorialSteps.length - 1 ? 'Próximo' : 'Bora começar! 🚀'}
+                  <ArrowRight className="w-5 h-5" />
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </main>
     </div>
