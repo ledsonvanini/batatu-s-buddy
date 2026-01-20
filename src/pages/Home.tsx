@@ -8,8 +8,12 @@ import { DialogBubble } from '@/components/DialogBubble';
 import { MoodCard } from '@/components/MoodCard';
 import { BubbleGame } from '@/components/BubbleGame';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
+import { useGameSounds } from '@/hooks/useGameSounds';
+import { XPDisplay } from '@/components/ui-custom/XPDisplay';
+import { StreakDisplay } from '@/components/ui-custom/StreakDisplay';
+import { ResponsiveNav } from '@/components/shared/ResponsiveNav';
 import { ThemeToggle } from '@/components/shared';
-import { Flame, Home as HomeIcon, Gamepad2, User, Settings, Trophy, Zap } from 'lucide-react';
+import { Home as HomeIcon, Gamepad2, Trophy, Settings } from 'lucide-react';
 import { motion } from 'motion/react';
 import type { Contexto } from '@/data/phrases';
 
@@ -87,33 +91,11 @@ export default function Home() {
       )}
 
       {/* Header - Gaming Style */}
-      <header className="flex items-center justify-between px-5 py-4 safe-top z-20">
+      <header className="flex items-center justify-between px-5 py-4 safe-top z-20 md:pt-20">
         <div className="flex items-center gap-3">
-          {/* Streak Badge */}
-          {preferences.currentStreak > 0 && (
-            <motion.div 
-              className="badge-streak"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 500, damping: 25 }}
-            >
-              <Flame className="w-4 h-4 fill-current" />
-              <span>{preferences.currentStreak}</span>
-            </motion.div>
-          )}
-          
-          {/* XP Badge (placeholder) */}
-          <motion.div 
-            className="badge-xp"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 500, damping: 25, delay: 0.1 }}
-          >
-            <Zap className="w-4 h-4" />
-            <span>150 XP</span>
-          </motion.div>
+          <StreakDisplay variant="badge" />
+          <XPDisplay variant="badge" />
         </div>
-
         <ThemeToggle />
       </header>
 
@@ -176,15 +158,8 @@ export default function Home() {
         </motion.div>
       </main>
 
-      {/* Bottom Nav - Gaming Style */}
-      <nav className="bottom-nav">
-        <div className="flex items-center justify-around max-w-md mx-auto">
-          <NavItem icon={HomeIcon} label="Início" active onClick={() => {}} />
-          <NavItem icon={Gamepad2} label="Jogar" onClick={() => navigate('/play')} />
-          <NavItem icon={Trophy} label="Conquistas" onClick={() => navigate('/profile')} />
-          <NavItem icon={Settings} label="Ajustes" onClick={() => navigate('/settings')} />
-        </div>
-      </nav>
+      {/* Responsive Navigation */}
+      <ResponsiveNav />
     </div>
   );
 }
