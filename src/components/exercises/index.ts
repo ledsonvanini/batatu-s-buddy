@@ -1,9 +1,12 @@
 /**
  * Barrel file para exercícios de respiração
- * Exporta os 10 jogos e components legacy (se necessário)
+ * Exporta os 10 jogos gaming e wrapper
  */
 
-// Games Refatorados/Novos
+// Gaming Wrapper
+export { GameExerciseWrapper } from './GameExerciseWrapper';
+
+// 10 Games Premium
 export { RollerCoasterBreathing } from './RollerCoasterBreathing';
 export { ExpandingCircle } from './ExpandingCircle';
 export { BalloonJourney } from './BalloonJourney';
@@ -15,7 +18,7 @@ export { FlowerBloom } from './FlowerBloom';
 export { StarFocus } from './StarFocus';
 export { TriangleBalance } from './TriangleBalance';
 
-// Legacy (Manter se necessário para compatibilidade, mas idealmente não usar)
+// Legacy (mantido para compatibilidade)
 export { BreathingCircle } from '../BreathingCircle';
 export { BalloonExercise } from './BalloonExercise';
 export { BubblesExercise } from './BubblesExercise';
