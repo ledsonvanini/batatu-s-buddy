@@ -1,61 +1,107 @@
 /**
- * PixelCandle - Chama de vela em pixel art que cresce e diminui
- * Estética retro-game
+ * PixelCandle - Chama de vela estilo gaming
+ * Visual com glow dinâmico
  */
 import { useBreathing } from '@/hooks/useBreathing';
 import type { BreathingGameProps } from '@/types/games';
+import { motion } from 'motion/react';
+import { GameExerciseWrapper } from './GameExerciseWrapper';
 
 export function PixelCandle({ persona, onCycleComplete }: BreathingGameProps) {
-    const { phase, progress } = useBreathing({
-        inhaleTime: 3000,
-        holdInTime: 1000,
-        exhaleTime: 4000, // Expirar lentamente na vela
-        holdOutTime: 1000,
-        onCycleComplete,
-    });
+  const { phase, progress } = useBreathing({
+    inhaleTime: 3000,
+    holdInTime: 1000,
+    exhaleTime: 4000,
+    holdOutTime: 1000,
+    onCycleComplete,
+  });
 
-    // Calculate flame size
-    const getFlameScale = () => {
-        if (phase === 'inhale') return 1 + (progress * 0.5); // Cresce
-        if (phase === 'hold-in') return 1.5;
-        if (phase === 'exhale') return 1.5 - (progress * 0.8); // Diminui bastante
-        return 0.7; // Quase apagando
-    };
+  const getFlameScale = () => {
+    switch (phase) {
+      case 'inhale': return 1 + (progress * 0.5);
+      case 'hold-in': return 1.5;
+      case 'exhale': return 1.5 - (progress * 0.8);
+      case 'hold-out': return 0.7;
+      default: return 1;
+    }
+  };
 
-    return (
-        <div className="flex flex-col items-center justify-center w-full h-[300px] relative bg-slate-900 rounded-3xl border border-slate-700 shadow-inner">
+  const phaseColors = {
+    'inhale': { flame: '#22d3ee', inner: '#a5f3fc', glow: 'rgba(34,211,238,0.6)' },
+    'hold-in': { flame: '#a78bfa', inner: '#ddd6fe', glow: 'rgba(167,139,250,0.6)' },
+    'exhale': { flame: '#fbbf24', inner: '#fef3c7', glow: 'rgba(251,191,36,0.8)' },
+    'hold-out': { flame: '#94a3b8', inner: '#e2e8f0', glow: 'rgba(148,163,184,0.3)' },
+  };
+  
+  const colors = phaseColors[phase];
+  const flameScale = getFlameScale();
 
-            {/* Container da Vela */}
-            <div className="relative mt-20">
-                {/* Chama (Pixel Art Style com box-shadows ou divs) */}
-                <div
-                    className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-8 h-8 bg-orange-500 transition-transform duration-100 ease-linear origin-bottom"
-                    style={{
-                        transform: `translateX(-50%) scale(${getFlameScale()})`,
-                        boxShadow: `
-              0 0 20px 5px rgba(249, 115, 22, 0.6),
-              inset 0 0 10px rgba(255, 255, 0, 0.8)
-            `,
-                        borderRadius: '50% 50% 30% 30% / 80% 80% 20% 20%'
-                    }}
-                >
-                    {/* Inner core */}
-                    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-4 h-5 bg-yellow-200 rounded-full opacity-80" />
-                </div>
-
-                {/* Pavio */}
-                <div className="w-1 h-3 bg-slate-800 mx-auto -mt-1" />
-
-                {/* Corpo da Vela */}
-                <div className="w-16 h-24 bg-slate-200 rounded-sm mx-auto shadow-md flex justify-center">
-                    {/* Cera escorrendo */}
-                    <div className="w-2 h-8 bg-slate-300 rounded-b-full ml-4 absolute top-3" />
-                </div>
-            </div>
-
-            <div className="mt-8 text-slate-400 font-pixel text-xs tracking-widest uppercase">
-                {phase === 'exhale' ? 'Sopre devagar...' : 'Respire...'}
-            </div>
+  return (
+    <GameExerciseWrapper phase={phase} progress={progress}>
+      <div className="flex flex-col items-center justify-center w-full h-56">
+        
+        {/* Candle container */}
+        <div className="relative">
+          {/* Flame */}
+          <motion.div
+            className="absolute -top-16 left-1/2 -translate-x-1/2 w-8 h-12 origin-bottom"
+            style={{
+              background: `radial-gradient(ellipse at 50% 80%, ${colors.inner} 0%, ${colors.flame} 50%, transparent 100%)`,
+              borderRadius: '50% 50% 40% 40% / 80% 80% 40% 40%',
+              boxShadow: `0 0 ${30 + flameScale * 20}px ${colors.glow}`,
+            }}
+            animate={{ 
+              scale: flameScale,
+              x: ['-50%', '-48%', '-52%', '-50%'],
+            }}
+            transition={{ 
+              scale: { duration: 0.1 },
+              x: { duration: 0.3, repeat: Infinity },
+            }}
+          >
+            {/* Inner flame */}
+            <div 
+              className="absolute bottom-1 left-1/2 -translate-x-1/2 w-3 h-5 rounded-full"
+              style={{ 
+                background: `linear-gradient(180deg, ${colors.inner} 0%, ${colors.flame} 100%)`,
+              }}
+            />
+          </motion.div>
+          
+          {/* Wick */}
+          <div className="w-1 h-4 bg-slate-600 mx-auto -mt-4 rounded-t" />
+          
+          {/* Candle body */}
+          <div 
+            className="w-16 h-24 rounded-lg mx-auto relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%)',
+              boxShadow: 'inset 0 2px 10px rgba(255,255,255,0.5), 0 4px 20px rgba(0,0,0,0.2)',
+            }}
+          >
+            {/* Wax drips */}
+            <motion.div
+              className="absolute -top-1 left-2 w-3 h-6 rounded-b-full bg-white/60"
+              animate={{ height: [24, 28, 24] }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
+            <motion.div
+              className="absolute -top-1 right-3 w-2 h-4 rounded-b-full bg-white/50"
+              animate={{ height: [16, 20, 16] }}
+              transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+            />
+          </div>
         </div>
-    );
+        
+        {/* Instruction */}
+        <div className="mt-6 px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
+          <span className="text-sm font-medium text-white/80">
+            {phase === 'exhale' ? 'Sopre devagar...' : 'Respire...'}
+          </span>
+        </div>
+      </div>
+    </GameExerciseWrapper>
+  );
 }
+
+export default PixelCandle;

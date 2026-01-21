@@ -1,60 +1,153 @@
 /**
- * OceanWave - Onda do mar que sobe e desce
- * Minimalista e relaxante
+ * OceanWave - Onda do mar estilo gaming relaxante
+ * Visual imersivo com gradientes e partículas
  */
 import { useBreathing } from '@/hooks/useBreathing';
 import type { BreathingGameProps } from '@/types/games';
-import { cn } from '@/lib/utils';
+import { motion } from 'motion/react';
+import { GameExerciseWrapper } from './GameExerciseWrapper';
 
 export function OceanWave({ persona, onCycleComplete }: BreathingGameProps) {
-    const { phase, progress } = useBreathing({
-        inhaleTime: 5000, // Ondas são lentas
-        holdInTime: 2000,
-        exhaleTime: 6000,
-        holdOutTime: 1000,
-        onCycleComplete,
-    });
+  const { phase, progress } = useBreathing({
+    inhaleTime: 4000,
+    holdInTime: 2000,
+    exhaleTime: 5000,
+    holdOutTime: 1000,
+    onCycleComplete,
+  });
 
-    // Altura da onda (0 a 100%)
-    const waveHeight = () => {
-        if (phase === 'inhale') return progress * 60; // Sobe até 60%
-        if (phase === 'hold-in') return 60 + (Math.sin(Date.now() / 300) * 2); // Flutua
-        if (phase === 'exhale') return 60 - (progress * 60); // Desce
-        return 0; // Mar calmo
-    };
+  // Altura da onda baseada na fase
+  const getWaveHeight = () => {
+    switch (phase) {
+      case 'inhale': return 30 + progress * 50; // 30% -> 80%
+      case 'hold-in': return 80 + Math.sin(Date.now() / 300) * 3; // Leve flutuação
+      case 'exhale': return 80 - progress * 50; // 80% -> 30%
+      case 'hold-out': return 30;
+      default: return 30;
+    }
+  };
 
-    return (
-        <div className="w-full h-[300px] relative overflow-hidden rounded-3xl bg-blue-50 dark:bg-slate-900 border border-blue-100 dark:border-slate-800 shadow-inner">
-            {/* Céu / Sol */}
-            <div className="absolute top-8 right-8 w-12 h-12 rounded-full bg-amber-200/50 shadow-[0_0_30px_rgba(251,191,36,0.4)]" />
+  const waveHeight = getWaveHeight();
+  
+  // Cores da água
+  const waterColors = {
+    'inhale': { top: '#22d3ee', bottom: '#0891b2' },
+    'hold-in': { top: '#a78bfa', bottom: '#7c3aed' },
+    'exhale': { top: '#fbbf24', bottom: '#d97706' },
+    'hold-out': { top: '#94a3b8', bottom: '#64748b' },
+  };
+  
+  const colors = waterColors[phase];
 
-            {/* Onda Container */}
-            <div
-                className="absolute bottom-0 left-0 right-0 bg-[#0ea5e9] transition-all duration-300 ease-linear"
-                style={{
-                    height: `${20 + waveHeight()}%`,
-                    opacity: 0.8
-                }}
-            >
-                {/* Crista da onda SVG animada */}
-                <div className="absolute -top-6 left-0 right-0 w-[200%] h-8 animate-wave-slow flex">
-                    {/* Repetir SVG wave para loop infinito */}
-                    <svg className="w-1/2 h-full text-[#0ea5e9] fill-current" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
-                        <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" transform="translate(0, -10)"></path>
-                        <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" transform="translate(0, -5)"></path>
-                    </svg>
-                    <svg className="w-1/2 h-full text-[#0ea5e9] fill-current" viewBox="0 0 1200 120" preserveAspectRatio="none">
-                        <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
-                        <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" transform="translate(0, -10)"></path>
-                        <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" transform="translate(0, -5)"></path>
-                    </svg>
-                </div>
-            </div>
-
-            <div className="absolute bottom-6 left-0 right-0 text-center z-10 text-white font-bold drop-shadow-md">
-                {phase === 'inhale' ? 'A onda vem...' : phase === 'exhale' ? 'A onda vai...' : '...'}
-            </div>
+  return (
+    <GameExerciseWrapper phase={phase} progress={progress}>
+      <div className="relative w-full h-64 overflow-hidden rounded-2xl">
+        {/* Sky gradient */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(180deg, 
+              rgba(15,23,42,0.8) 0%, 
+              rgba(30,41,59,0.6) 50%, 
+              ${colors.top}30 100%
+            )`,
+          }}
+        />
+        
+        {/* Moon/Sun */}
+        <motion.div
+          className="absolute top-8 right-12 w-12 h-12 rounded-full"
+          style={{
+            background: phase === 'exhale' 
+              ? 'radial-gradient(circle, #fef3c7 0%, #fbbf24 100%)'
+              : 'radial-gradient(circle, #e2e8f0 0%, #94a3b8 100%)',
+            boxShadow: phase === 'exhale'
+              ? '0 0 40px rgba(251,191,36,0.5)'
+              : '0 0 30px rgba(148,163,184,0.3)',
+          }}
+          animate={{ y: phase === 'inhale' ? [0, -5, 0] : 0 }}
+          transition={{ duration: 2, repeat: Infinity }}
+        />
+        
+        {/* Stars (visible except exhale) */}
+        {phase !== 'exhale' && [...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-white rounded-full"
+            style={{
+              left: `${10 + i * 12}%`,
+              top: `${10 + (i % 3) * 15}%`,
+            }}
+            animate={{ opacity: [0.3, 0.8, 0.3] }}
+            transition={{ duration: 2, delay: i * 0.3, repeat: Infinity }}
+          />
+        ))}
+        
+        {/* Water container */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 transition-all duration-300"
+          style={{ height: `${waveHeight}%` }}
+        >
+          {/* Wave gradient */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(180deg, ${colors.top} 0%, ${colors.bottom} 100%)`,
+            }}
+          />
+          
+          {/* Wave crest SVG */}
+          <svg 
+            className="absolute -top-6 left-0 w-[200%] h-8"
+            viewBox="0 0 1200 32"
+            preserveAspectRatio="none"
+          >
+            <motion.path
+              d="M0,16 Q150,0 300,16 T600,16 T900,16 T1200,16 V32 H0 Z"
+              fill={colors.top}
+              animate={{ x: [-600, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+            />
+          </svg>
+          
+          {/* Bubbles */}
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-2 h-2 rounded-full bg-white/30"
+              style={{ left: `${20 + i * 15}%` }}
+              initial={{ bottom: '10%', opacity: 0 }}
+              animate={{ 
+                bottom: '90%', 
+                opacity: [0, 0.6, 0],
+                scale: [0.5, 1, 0.5],
+              }}
+              transition={{
+                duration: 3,
+                delay: i * 0.8,
+                repeat: Infinity,
+              }}
+            />
+          ))}
+          
+          {/* Foam line */}
+          <div 
+            className="absolute top-0 left-0 right-0 h-1 bg-white/40 blur-sm"
+          />
         </div>
-    );
+        
+        {/* Reflection shimmer */}
+        <motion.div
+          className="absolute bottom-0 left-1/4 w-1/2 h-1/3 pointer-events-none"
+          style={{
+            background: 'linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%)',
+          }}
+          animate={{ opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        />
+      </div>
+    </GameExerciseWrapper>
+  );
 }
+
+export default OceanWave;
