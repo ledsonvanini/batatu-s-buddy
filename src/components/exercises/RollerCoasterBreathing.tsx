@@ -8,7 +8,7 @@ import { useBreathing } from '@/hooks/useBreathing';
 import type { BreathingGameProps } from '@/types/games';
 import { GameExerciseWrapper } from './GameExerciseWrapper';
 
-export function RollerCoasterBreathing({ persona, onCycleComplete }: BreathingGameProps) {
+export function RollerCoasterBreathing({ persona, onCycleComplete, onPhaseChange }: BreathingGameProps) {
   const { phase, progress } = useBreathing({
     inhaleTime: 4000,
     holdInTime: 2000,
@@ -19,6 +19,7 @@ export function RollerCoasterBreathing({ persona, onCycleComplete }: BreathingGa
 
   const pathRef = useRef<SVGPathElement>(null);
   const [dotPos, setDotPos] = useState({ x: 20, y: 160 });
+  const lastPhase = useRef(phase);
 
   const getPhaseProgress = () => {
     if (phase === 'inhale') return progress * 0.4;
@@ -35,6 +36,14 @@ export function RollerCoasterBreathing({ persona, onCycleComplete }: BreathingGa
       setDotPos({ x: point.x, y: point.y });
     }
   }, [phase, progress]);
+
+  // Notify phase changes
+  useEffect(() => {
+    if (phase !== lastPhase.current) {
+      lastPhase.current = phase;
+      onPhaseChange?.(phase);
+    }
+  }, [phase, onPhaseChange]);
 
   const phaseColors = {
     'inhale': { main: '#22d3ee', glow: 'rgba(34,211,238,0.8)' },
