@@ -1,6 +1,6 @@
 /**
- * Session - Tela de exercício v3.1
- * Inclui os 10 jogos de respiração premium
+ * Session - Tela de exercício v3.2
+ * Inclui os 10 jogos de respiração premium + Guia narrativo do Batatu
  */
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -18,7 +18,7 @@ import { DialogBubble } from '@/components/DialogBubble';
 import { SceneryBackground } from '@/components/scenery';
 import { ThemeToggle } from '@/components/shared';
 
-// Games
+// Games & Narrative Guide
 import {
   RollerCoasterBreathing,
   ExpandingCircle,
@@ -29,10 +29,12 @@ import {
   PixelCandle,
   FlowerBloom,
   StarFocus,
-  TriangleBalance
+  TriangleBalance,
+  NarrativeGuide,
 } from '@/components/exercises';
 
 type SessionPhase = 'intro' | 'exercise' | 'feedback' | 'reward';
+type BreathPhase = 'inhale' | 'hold-in' | 'exhale' | 'hold-out' | 'idle';
 type ExerciseType =
   | 'rollercoaster'
   | 'circle'
@@ -69,6 +71,7 @@ export default function Session() {
   const { preferences, completeSession } = useUserPreferences();
 
   const [phase, setPhase] = useState<SessionPhase>('intro');
+  const [breathPhase, setBreathPhase] = useState<BreathPhase>('idle');
   const [cycleCount, setCycleCount] = useState(0);
   const [feedback, setFeedback] = useState<'better' | 'same' | 'worse' | null>(null);
   const [exerciseType, setExerciseType] = useState<ExerciseType>('rollercoaster');
@@ -117,14 +120,20 @@ export default function Session() {
 
   const handleContinue = () => {
     setCycleCount(0);
+    setBreathPhase('idle');
     setPhase('exercise');
     setFeedback(null);
+  };
+  
+  const handlePhaseChange = (newPhase: BreathPhase) => {
+    setBreathPhase(newPhase);
   };
 
   const renderExercise = () => {
     const commonProps = {
       persona: preferences.persona,
       onCycleComplete: handleCycleComplete,
+      onPhaseChange: handlePhaseChange,
     };
 
     switch (exerciseType) {
@@ -204,10 +213,16 @@ export default function Session() {
 
             {/* Exercise Component Container */}
             <div className="w-full relative min-h-[320px] flex items-center justify-center">
-              {/* Batatu Behind/Corner */}
-              <div className="absolute bottom-[-20px] left-[-10px] scale-75 z-0 opacity-90 transition-opacity hover:opacity-100">
-                <BatatuMascot size="sm" persona={preferences.persona} mood="relaxed" />
-              </div>
+              {/* Narrative Guide - Batatu com falas sincronizadas */}
+              <NarrativeGuide
+                persona={preferences.persona}
+                contexto={currentContexto}
+                phase={breathPhase}
+                cycleCount={cycleCount}
+                isActive={phase === 'exercise'}
+                position="bottom-left"
+                size="sm"
+              />
 
               {/* The Exercise */}
               <div className="z-10 w-full">

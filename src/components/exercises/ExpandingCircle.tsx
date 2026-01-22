@@ -4,12 +4,12 @@
  */
 import { useBreathing } from '@/hooks/useBreathing';
 import { useGameSounds } from '@/hooks/useGameSounds';
-import type { BreathingGameProps } from '@/types/games';
+import type { BreathingGameProps, BreathPhaseType } from '@/types/games';
 import { motion } from 'motion/react';
 import { useEffect, useRef } from 'react';
 import { GameExerciseWrapper } from './GameExerciseWrapper';
 
-export function ExpandingCircle({ persona, onCycleComplete }: BreathingGameProps) {
+export function ExpandingCircle({ persona, onCycleComplete, onPhaseChange }: BreathingGameProps) {
   const { phase, progress } = useBreathing({
     inhaleTime: 4000,
     holdInTime: 2000,
@@ -26,8 +26,11 @@ export function ExpandingCircle({ persona, onCycleComplete }: BreathingGameProps
       if (phase === 'inhale') inhale();
       else if (phase === 'exhale') exhale();
       lastPhase.current = phase;
+      
+      // Notificar mudança de fase
+      onPhaseChange?.(phase);
     }
-  }, [phase, inhale, exhale]);
+  }, [phase, inhale, exhale, onPhaseChange]);
 
   const getScale = () => {
     switch (phase) {

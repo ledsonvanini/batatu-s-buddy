@@ -1,10 +1,11 @@
 /**
  * Barrel file para exercícios de respiração
- * Exporta os 10 jogos gaming e wrapper
+ * Exporta os 10 jogos gaming, wrapper e guia narrativo
  */
 
-// Gaming Wrapper
+// Gaming Wrapper & Narrative Guide
 export { GameExerciseWrapper } from './GameExerciseWrapper';
+export { NarrativeGuide } from './NarrativeGuide';
 
 // 10 Games Premium
 export { RollerCoasterBreathing } from './RollerCoasterBreathing';
