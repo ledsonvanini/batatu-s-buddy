@@ -90,8 +90,8 @@ export default function Home() {
         />
       )}
 
-      {/* Header - Gaming Style */}
-      <header className="flex items-center justify-between px-5 py-4 safe-top z-20 md:pt-20">
+      {/* Header - Gaming Style - Ajusta para desktop top nav */}
+      <header className="flex items-center justify-between px-5 py-4 safe-top z-20 md:pt-20 md:hidden">
         <div className="flex items-center gap-3">
           <StreakDisplay variant="badge" />
           <XPDisplay variant="badge" />
@@ -99,12 +99,12 @@ export default function Home() {
         <ThemeToggle />
       </header>
 
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 pb-24 w-full max-w-md mx-auto relative z-10">
+      {/* Main Content - Responsive: pb-24 mobile (bottom nav), pb-6 desktop */}
+      <main className="flex-1 flex flex-col items-center justify-center px-4 pb-24 md:pb-6 md:pt-16 w-full max-w-md md:max-w-3xl mx-auto relative z-10 gap-2 md:gap-4">
 
-        {/* Batatu with glow */}
+        {/* Batatu with glow - smaller on desktop to fit everything */}
         <motion.div 
-          className="relative mb-4"
+          className="relative"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -114,15 +114,15 @@ export default function Home() {
             style={{ background: 'var(--primary-glow)', transform: 'scale(1.3)' }}
           />
           <BatatuMascot
-            size="md"
+            size="sm"
             persona={preferences.persona}
             mood="happy"
           />
         </motion.div>
 
-        {/* Message */}
+        {/* Message - compact */}
         <motion.div 
-          className="mb-8 w-full max-w-[300px]"
+          className="w-full max-w-[280px] md:max-w-[320px]"
           initial={{ y: 15, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -134,9 +134,9 @@ export default function Home() {
           />
         </motion.div>
 
-        {/* Mood Grid - Gaming Cards */}
+        {/* Mood Grid - Gaming Cards - Responsive grid */}
         <motion.div 
-          className="w-full grid grid-cols-2 gap-4"
+          className="w-full grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -156,6 +156,12 @@ export default function Home() {
             </motion.div>
           ))}
         </motion.div>
+        
+        {/* Desktop: badges abaixo do grid */}
+        <div className="hidden md:flex items-center gap-4 mt-6">
+          <StreakDisplay variant="badge" />
+          <XPDisplay variant="badge" />
+        </div>
       </main>
 
       {/* Responsive Navigation */}
