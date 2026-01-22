@@ -9,6 +9,7 @@ import Onboarding from "./pages/Onboarding";
 import Home from "./pages/Home";
 import Session from "./pages/Session";
 import Settings from "./pages/Settings";
+import Achievements from "./pages/Achievements";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
                 <Route path="/home" element={<Home />} />
                 <Route path="/play" element={<Home />} />
                 <Route path="/profile" element={<Settings />} />
+                <Route path="/achievements" element={<Achievements />} />
                 <Route path="/session/:contexto" element={<Session />} />
                 <Route path="/settings" element={<Settings />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
